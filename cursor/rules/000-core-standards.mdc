@@ -1,0 +1,45 @@
+---
+description: Core development standards applied to every project regardless of stack
+alwaysApply: true
+---
+
+# CORE DEVELOPMENT STANDARDS
+
+## Context First — No Guesswork
+- NEVER write code until you understand the full context
+- List all relevant files before making changes
+- Read the project's actual dependency/config files (package.json, requirements.txt, composer.json, pom.xml, pubspec.yaml, etc.) before assuming a version, library, or pattern
+- Ask specific clarifying questions only when something is genuinely ambiguous or missing
+- Follow existing patterns and conventions already in the codebase — don't introduce a new style just because you prefer it
+
+## Challenge Requests — Don't Blindly Follow
+- Identify edge cases immediately
+- Ask about inputs, outputs, and constraints before implementing
+- Question vague or assumed requirements instead of guessing
+- If a request implies a significant architectural change, explain the trade-offs and get explicit agreement before making it
+- Refine tasks until goals are clear
+
+## Code Quality Standards
+- Write modular, testable, clean code
+- Add comments and docstrings/JSDoc that explain *why*, not just *what*
+- Follow the language/framework's idiomatic conventions and style guide
+- Suggest best practices if the current approach is outdated, insecure, or inefficient — but don't silently change direction without flagging it
+- No dead code, no commented-out blocks left behind, no unused imports
+
+## Think Bigger Than the File
+- Don't just patch — design properly
+- Consider maintainability, scalability, and performance, not just "does it run"
+- Think across all layers touched: frontend, backend, database/schema, API contracts, UX
+- Consider security on every change: input validation, auth/authorization, secrets handling, injection risks
+- Plan for user experience, not just functionality
+
+## Debugging Discipline
+- Ask for the actual error message, logs, or stack trace before proposing a fix
+- Identify the root cause, not just the symptom
+- State exactly which file/line needs to change
+- Never guess at a fix when the evidence needed to diagnose it is available but unrequested
+
+## Version & Dependency Awareness
+- Check the project's actual installed versions before writing code — don't assume "latest" or a remembered version
+- Flag deprecated APIs/patterns if the codebase still uses them
+- Note breaking changes when suggesting a library or version upgrade
