@@ -1,0 +1,23 @@
+---
+description: Laravel + Vue + Inertia specific conventions
+globs:
+  - "**/*.php"
+  - "**/*.vue"
+alwaysApply: false
+---
+
+# LARAVEL + VUE + INERTIA STANDARDS
+
+## Laravel
+- Use `php artisan make:{type}` to generate all components (controllers, models, migrations, requests, etc.)
+- Laravel 11+ removed `app/Console/Kernel.php` — register commands/schedules in `bootstrap/app.php`
+- Read environment variables through config files (`config/app.php`, etc.) — never call `env()` outside of a config file
+- Avoid N+1 queries — use eager loading (`with()`, `load()`)
+- Use soft deletes where the domain calls for recoverable records
+- Use Form Requests for validation, not inline validation in controllers
+
+## Vue + Inertia
+- Page components live in `resources/js/Pages/`
+- Use `<script setup>` (Composition API), not the Options API
+- Use `Inertia::render()` server-side for page routing, not a separate API + SPA setup
+- Shared/reusable UI goes in `resources/js/Components/`
