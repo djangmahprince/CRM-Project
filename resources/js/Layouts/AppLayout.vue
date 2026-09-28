@@ -25,7 +25,8 @@ const nav = [
     { label: 'Tasks', href: '/tasks' },
     { label: 'Calendar', href: '/calendar' },
     { label: 'Reports', href: '/reports' },
-    { label: 'Dashboards', href: null },
+    { label: 'Dashboards', href: '/crm-dashboards' },
+    { label: 'Search+', href: '/search/advanced' },
 ];
 
 const currentPath = computed(() => page.url.split('?')[0]);
@@ -109,6 +110,9 @@ function goSearch() {
                         </div>
                         <Link href="/logout" method="post" as="button" class="text-sm font-medium text-slate-600 transition hover:text-slate-950">
                             Sign out
+                        </Link>
+                        <Link href="/settings/mfa" class="text-sm font-medium text-slate-600 transition hover:text-slate-950">
+                            MFA
                         </Link>
                     </div>
                 </div>

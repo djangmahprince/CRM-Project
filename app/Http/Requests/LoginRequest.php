@@ -57,6 +57,14 @@ class LoginRequest extends FormRequest
             'locked_until' => null,
         ])->save();
 
+        if ($authenticated->mfa_enabled) {
+            Auth::logout();
+            $this->session()->put('mfa_pending_user_id', $authenticated->id);
+            $this->session()->put('mfa_remember', $this->boolean('remember'));
+
+            return;
+        }
+
         $this->session()->regenerate();
         $this->session()->put('last_activity_at', now()->timestamp);
     }

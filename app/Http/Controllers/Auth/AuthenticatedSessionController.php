@@ -21,6 +21,10 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        if ($request->session()->has('mfa_pending_user_id')) {
+            return redirect()->route('mfa.challenge');
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 

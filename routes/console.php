@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\SendReportSubscriptions;
 use App\Jobs\SendTaskReminders;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -10,3 +11,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::job(new SendTaskReminders)->everyFiveMinutes();
+Schedule::job(new SendReportSubscriptions)->hourly();

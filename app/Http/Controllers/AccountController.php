@@ -72,6 +72,7 @@ class AccountController extends Controller
             'createdBy:id,name',
             'updatedBy:id,name',
             'parentAccount:id,name',
+            'children:id,parent_account_id,name,type,industry',
             'contacts:id,account_id,first_name,last_name,email,title',
             'opportunities:id,account_id,name,stage,amount,close_date',
             'cases:id,account_id,case_number,subject,status,priority',
@@ -82,6 +83,7 @@ class AccountController extends Controller
 
         return Inertia::render('Accounts/Show', [
             'account' => $account,
+            'rollups' => $account->hierarchyRollups(),
             'can' => [
                 'update' => $request->user()->can('update', $account),
                 'delete' => $request->user()->can('delete', $account),

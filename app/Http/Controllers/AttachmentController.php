@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAttachmentRequest;
 use App\Models\Attachment;
 use App\Support\CrmRegistry;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -41,13 +42,27 @@ class AttachmentController extends Controller
 
     public function download(Attachment $attachment): StreamedResponse
     {
-        abort_unless(
-            (int) $attachment->owner_id === (int) auth()->id()
-            || auth()->user()?->can('records.view-all'),
-            403
-        );
+        $this->authorizeAttachment($attachment);
 
         return Storage::disk($attachment->disk)->download($attachment->path, $attachment->original_name);
+    }
+
+    public function preview(Attachment $attachment): StreamedResponse|Response
+    {
+        $this->authorizeAttachment($attachment);
+
+        $mime = (string) $attachment->mime;
+        $previewable = str_starts_with($mime, 'image/') || $mime === 'application/pdf' || str_starts_with($mime, 'text/');
+        abort_unless($previewable, 415, 'Preview is only available for images, PDF, and text files.');
+
+        return response(
+            Storage::disk($attachment->disk)->get($attachment->path),
+            200,
+            [
+                'Content-Type' => $mime,
+                'Content-Disposition' => 'inline; filename="'.$attachment->original_name.'"',
+            ]
+        );
     }
 
     public function destroy(Attachment $attachment): RedirectResponse
@@ -57,5 +72,14 @@ class AttachmentController extends Controller
         $attachment->delete();
 
         return back()->with('success', 'Attachment deleted.');
+    }
+
+    private function authorizeAttachment(Attachment $attachment): void
+    {
+        abort_unless(
+            (int) $attachment->owner_id === (int) auth()->id()
+            || auth()->user()?->can('records.view-all'),
+            403
+        );
     }
 }

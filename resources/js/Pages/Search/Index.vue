@@ -43,6 +43,9 @@ function filterLink(key) {
             <button type="submit" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">
                 Search
             </button>
+            <Link href="/search/advanced" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Advanced search
+            </Link>
         </form>
 
         <div class="mb-6 flex flex-wrap gap-2">

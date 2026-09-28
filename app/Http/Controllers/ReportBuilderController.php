@@ -62,6 +62,14 @@ class ReportBuilderController extends Controller
     /**
      * @return list<array<string, mixed>>
      */
+    public function previewRows(Request $request, Report $report): array
+    {
+        return $this->runReport($request, $report);
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function runReport(Request $request, Report $report): array
     {
         $columns = $report->definition['columns'] ?? [];

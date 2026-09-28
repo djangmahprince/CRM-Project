@@ -5,6 +5,7 @@ import NotesAttachments from '../../Components/NotesAttachments.vue';
 
 const props = defineProps({
     account: Object,
+    rollups: Object,
     can: Object,
 });
 
@@ -42,7 +43,33 @@ function destroyAccount() {
             <Link href="/accounts" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
                 Back to list
             </Link>
+            <Link href="/accounts/hierarchy" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Hierarchy
+            </Link>
         </div>
+
+        <section v-if="rollups" class="mb-6 border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-950">Hierarchy rollups</h2>
+            <dl class="mt-4 grid gap-4 text-sm sm:grid-cols-3">
+                <div>
+                    <dt class="text-slate-500">Accounts in tree</dt>
+                    <dd class="mt-1 font-medium text-slate-900">{{ rollups.account_count }}</dd>
+                </div>
+                <div>
+                    <dt class="text-slate-500">Total employees</dt>
+                    <dd class="mt-1 font-medium text-slate-900">{{ rollups.total_employees }}</dd>
+                </div>
+                <div>
+                    <dt class="text-slate-500">Total revenue</dt>
+                    <dd class="mt-1 font-medium text-slate-900">{{ rollups.total_revenue }}</dd>
+                </div>
+            </dl>
+            <ul v-if="account.children?.length" class="mt-4 divide-y divide-slate-100 text-sm">
+                <li v-for="child in account.children" :key="child.id" class="py-2">
+                    <Link :href="`/accounts/${child.id}`" class="font-medium text-teal-800 hover:underline">{{ child.name }}</Link>
+                </li>
+            </ul>
+        </section>
 
         <div class="grid gap-6 lg:grid-cols-2">
             <section class="border border-slate-200 bg-white p-6 shadow-sm">

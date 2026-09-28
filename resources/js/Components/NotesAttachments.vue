@@ -97,12 +97,22 @@ function submitAttachment() {
             <ul v-if="attachments.length" class="mt-4 divide-y divide-slate-100 text-sm">
                 <li v-for="attachment in attachments" :key="attachment.id" class="flex items-center justify-between gap-3 py-3">
                     <span class="text-slate-800">{{ attachment.original_name }}</span>
-                    <a
-                        :href="`/attachments/${attachment.id}/download`"
-                        class="font-medium text-teal-700 hover:underline"
-                    >
-                        Download
-                    </a>
+                    <span class="flex gap-3">
+                        <a
+                            :href="`/attachments/${attachment.id}/preview`"
+                            target="_blank"
+                            rel="noopener"
+                            class="font-medium text-teal-700 hover:underline"
+                        >
+                            Preview
+                        </a>
+                        <a
+                            :href="`/attachments/${attachment.id}/download`"
+                            class="font-medium text-teal-700 hover:underline"
+                        >
+                            Download
+                        </a>
+                    </span>
                 </li>
             </ul>
             <p v-else class="mt-4 text-sm text-slate-500">No attachments yet.</p>
