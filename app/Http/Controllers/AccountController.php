@@ -75,6 +75,8 @@ class AccountController extends Controller
             'contacts:id,account_id,first_name,last_name,email,title',
             'opportunities:id,account_id,name,stage,amount,close_date',
             'cases:id,account_id,case_number,subject,status,priority',
+            'notes' => fn ($q) => $q->latest()->limit(20),
+            'attachments' => fn ($q) => $q->latest()->limit(20),
         ]);
         $account->recordView($request->user());
 

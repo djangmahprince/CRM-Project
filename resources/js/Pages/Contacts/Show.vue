@@ -1,6 +1,7 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import AppLayout from '../../Layouts/AppLayout.vue';
+import NotesAttachments from '../../Components/NotesAttachments.vue';
 
 const props = defineProps({
     contact: Object,
@@ -136,5 +137,12 @@ function destroyContact() {
             </ul>
             <p v-else class="text-sm text-slate-500">No related cases.</p>
         </section>
+
+        <NotesAttachments
+            notable-type="contact"
+            :notable-id="contact.id"
+            :notes="contact.notes || []"
+            :attachments="contact.attachments || []"
+        />
     </AppLayout>
 </template>

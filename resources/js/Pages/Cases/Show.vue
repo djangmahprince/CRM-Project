@@ -1,6 +1,7 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import AppLayout from '../../Layouts/AppLayout.vue';
+import NotesAttachments from '../../Components/NotesAttachments.vue';
 
 const props = defineProps({
     caseRecord: Object,
@@ -150,5 +151,12 @@ function contactName(contact) {
                 </dl>
             </section>
         </div>
+
+        <NotesAttachments
+            notable-type="case"
+            :notable-id="caseRecord.id"
+            :notes="caseRecord.notes || []"
+            :attachments="caseRecord.attachments || []"
+        />
     </AppLayout>
 </template>

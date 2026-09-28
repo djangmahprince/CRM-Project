@@ -84,6 +84,8 @@ class CaseController extends Controller
             'updatedBy:id,name',
             'account:id,name',
             'contact:id,first_name,last_name',
+            'notes' => fn ($q) => $q->latest()->limit(20),
+            'attachments' => fn ($q) => $q->latest()->limit(20),
         ]);
         $case->recordView($request->user());
 

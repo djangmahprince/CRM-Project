@@ -1,6 +1,7 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import AppLayout from '../../Layouts/AppLayout.vue';
+import NotesAttachments from '../../Components/NotesAttachments.vue';
 
 const props = defineProps({
     account: Object,
@@ -174,5 +175,12 @@ function destroyAccount() {
                 <p v-else class="text-sm text-slate-500">No related cases.</p>
             </section>
         </div>
+
+        <NotesAttachments
+            notable-type="account"
+            :notable-id="account.id"
+            :notes="account.notes || []"
+            :attachments="account.attachments || []"
+        />
     </AppLayout>
 </template>

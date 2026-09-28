@@ -22,8 +22,8 @@ const nav = [
     { label: 'Contacts', href: '/contacts' },
     { label: 'Opportunities', href: '/opportunities' },
     { label: 'Cases', href: '/cases' },
-    { label: 'Tasks', href: null },
-    { label: 'Calendar', href: null },
+    { label: 'Tasks', href: '/tasks' },
+    { label: 'Calendar', href: '/calendar' },
     { label: 'Reports', href: '/reports' },
     { label: 'Dashboards', href: null },
 ];

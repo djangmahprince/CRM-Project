@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CrmCase;
+use App\Models\Event;
 use App\Models\Lead;
 use App\Models\Opportunity;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -15,6 +17,7 @@ class DashboardController extends Controller
     public function __invoke(Request $request): Response
     {
         $user = $request->user();
+        $today = now()->toDateString();
 
         $openLeads = Lead::query()->visibleTo($user)->where('converted', false)->count();
         $openCases = CrmCase::query()->visibleTo($user)->where('is_closed', false)->count();
@@ -47,6 +50,21 @@ class DashboardController extends Controller
                 'expected_revenue' => round((float) $row->expected_revenue, 2),
             ]);
 
+        $todaysTasks = Task::query()
+            ->visibleTo($user)
+            ->whereDate('due_date', $today)
+            ->where('status', '!=', 'Completed')
+            ->orderBy('due_date')
+            ->limit(10)
+            ->get(['id', 'subject', 'status', 'priority', 'due_date']);
+
+        $todaysEvents = Event::query()
+            ->visibleTo($user)
+            ->whereDate('starts_at', $today)
+            ->orderBy('starts_at')
+            ->limit(10)
+            ->get(['id', 'subject', 'starts_at', 'ends_at', 'location']);
+
         return Inertia::render('Dashboard', [
             'title' => 'Good morning',
             'metrics' => [
@@ -56,6 +74,8 @@ class DashboardController extends Controller
             ],
             'funnel' => $funnel,
             'revenueBySource' => $revenueBySource,
+            'todaysTasks' => $todaysTasks,
+            'todaysEvents' => $todaysEvents,
         ]);
     }
 }

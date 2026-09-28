@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CrmCase;
 use App\Models\Lead;
 use App\Models\Opportunity;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
         return Inertia::render('Reports/Index', [
             'reports' => [
@@ -22,6 +23,16 @@ class ReportController extends Controller
                 ['key' => 'leads-by-source', 'name' => 'Leads by source', 'description' => 'Lead counts grouped by lead source.'],
                 ['key' => 'open-cases', 'name' => 'Open cases', 'description' => 'All cases that are not closed.'],
             ],
+            'customReports' => Report::query()
+                ->where(function ($q) use ($request) {
+                    $q->where('owner_id', $request->user()->id);
+                    if ($request->user()->can('records.view-all')) {
+                        $q->orWhere('is_system', true);
+                    }
+                })
+                ->latest()
+                ->get(['id', 'name', 'description', 'report_type']),
+            'canBuild' => true,
         ]);
     }
 

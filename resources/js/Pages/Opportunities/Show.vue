@@ -2,6 +2,7 @@
 import { Link, router } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import AppLayout from '../../Layouts/AppLayout.vue';
+import NotesAttachments from '../../Components/NotesAttachments.vue';
 
 const props = defineProps({
     opportunity: Object,
@@ -153,5 +154,12 @@ function destroyOpportunity() {
             </ul>
             <p v-else class="mt-4 text-sm text-slate-500">No stage changes recorded yet.</p>
         </section>
+
+        <NotesAttachments
+            notable-type="opportunity"
+            :notable-id="opportunity.id"
+            :notes="opportunity.notes || []"
+            :attachments="opportunity.attachments || []"
+        />
     </AppLayout>
 </template>

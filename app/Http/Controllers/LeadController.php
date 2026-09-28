@@ -106,7 +106,17 @@ class LeadController extends Controller
     {
         Gate::authorize('view', $lead);
 
-        $lead->load(['owner:id,name,email', 'createdBy:id,name', 'updatedBy:id,name']);
+        $lead->load([
+            'owner:id,name,email',
+            'createdBy:id,name',
+            'updatedBy:id,name',
+            'convertedAccount:id,name',
+            'convertedContact:id,first_name,last_name',
+            'convertedOpportunity:id,name',
+            'notes' => fn ($q) => $q->latest()->limit(20),
+            'attachments' => fn ($q) => $q->latest()->limit(20),
+            'tasks' => fn ($q) => $q->latest()->limit(10)->with('assignedTo:id,name'),
+        ]);
         $lead->recordView($request->user());
 
         return Inertia::render('Leads/Show', [
@@ -114,6 +124,7 @@ class LeadController extends Controller
             'can' => [
                 'update' => $request->user()->can('update', $lead),
                 'delete' => $request->user()->can('delete', $lead),
+                'convert' => ! $lead->converted && $request->user()->can('update', $lead),
             ],
         ]);
     }

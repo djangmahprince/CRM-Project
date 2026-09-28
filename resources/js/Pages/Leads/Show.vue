@@ -1,13 +1,29 @@
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import AppLayout from '../../Layouts/AppLayout.vue';
+import FormField from '../../Components/FormField.vue';
 
 const props = defineProps({
     lead: Object,
     can: Object,
 });
 
+const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+
 const name = [props.lead.first_name, props.lead.last_name].filter(Boolean).join(' ');
+
+const noteForm = useForm({
+    notable_type: 'lead',
+    notable_id: props.lead.id,
+    title: '',
+    body: '',
+});
+
+const attachmentForm = useForm({
+    attachable_type: 'lead',
+    attachable_id: props.lead.id,
+    file: null,
+});
 
 function destroyLead() {
     if (!window.confirm('Delete this lead?')) {
@@ -16,17 +32,57 @@ function destroyLead() {
 
     router.delete(`/leads/${props.lead.id}`);
 }
+
+function submitNote() {
+    noteForm.post('/notes', {
+        preserveScroll: true,
+        onSuccess: () => noteForm.reset('title', 'body'),
+    });
+}
+
+function onAttachmentChange(event) {
+    attachmentForm.file = event.target.files?.[0] ?? null;
+}
+
+function submitAttachment() {
+    attachmentForm.post('/attachments', {
+        forceFormData: true,
+        preserveScroll: true,
+        onSuccess: () => {
+            attachmentForm.reset('file');
+        },
+    });
+}
+
+function contactName(contact) {
+    return [contact?.first_name, contact?.last_name].filter(Boolean).join(' ');
+}
+
+const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}&status=Completed&subject=${encodeURIComponent('Call')}`;
 </script>
 
 <template>
     <AppLayout :title="name">
         <div class="mb-6 flex flex-wrap gap-3">
             <Link
-                v-if="can.update"
-                :href="`/leads/${lead.id}/edit`"
+                v-if="can.convert"
+                :href="`/leads/${lead.id}/convert`"
                 class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
             >
+                Convert
+            </Link>
+            <Link
+                v-if="can.update"
+                :href="`/leads/${lead.id}/edit`"
+                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
                 Edit
+            </Link>
+            <Link
+                :href="logCallHref"
+                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+                Log a Call
             </Link>
             <button
                 v-if="can.delete"
@@ -43,6 +99,26 @@ function destroyLead() {
 
         <div v-if="lead.converted" class="mb-6 border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
             This lead has been converted and is read-only.
+            <span v-if="lead.convertedAccount || lead.convertedContact || lead.convertedOpportunity" class="mt-2 block">
+                <span v-if="lead.convertedAccount">
+                    Account:
+                    <Link :href="`/accounts/${lead.convertedAccount.id}`" class="font-medium text-teal-900 underline">
+                        {{ lead.convertedAccount.name }}
+                    </Link>
+                </span>
+                <span v-if="lead.convertedContact" class="ml-0 block sm:ml-4 sm:inline">
+                    Contact:
+                    <Link :href="`/contacts/${lead.convertedContact.id}`" class="font-medium text-teal-900 underline">
+                        {{ contactName(lead.convertedContact) }}
+                    </Link>
+                </span>
+                <span v-if="lead.convertedOpportunity" class="ml-0 block sm:ml-4 sm:inline">
+                    Opportunity:
+                    <Link :href="`/opportunities/${lead.convertedOpportunity.id}`" class="font-medium text-teal-900 underline">
+                        {{ lead.convertedOpportunity.name }}
+                    </Link>
+                </span>
+            </span>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-2">
@@ -96,6 +172,72 @@ function destroyLead() {
                         <dd class="mt-1 font-medium text-slate-900">{{ lead.updatedBy?.name || '—' }}</dd>
                     </div>
                 </dl>
+            </section>
+        </div>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-2">
+            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-lg font-semibold text-slate-950">Notes</h2>
+
+                <form class="mt-4 space-y-4 border-b border-slate-100 pb-6" @submit.prevent="submitNote">
+                    <FormField label="Title" for-id="note_title" :error="noteForm.errors.title">
+                        <input id="note_title" v-model="noteForm.title" type="text" :class="inputClass" />
+                    </FormField>
+                    <FormField label="Body" for-id="note_body" :error="noteForm.errors.body">
+                        <textarea id="note_body" v-model="noteForm.body" rows="3" required :class="inputClass" />
+                    </FormField>
+                    <button
+                        type="submit"
+                        :disabled="noteForm.processing"
+                        class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    >
+                        {{ noteForm.processing ? 'Saving...' : 'Add note' }}
+                    </button>
+                </form>
+
+                <ul v-if="lead.notes?.length" class="mt-4 divide-y divide-slate-100 text-sm">
+                    <li v-for="note in lead.notes" :key="note.id" class="py-3">
+                        <p v-if="note.title" class="font-medium text-slate-900">{{ note.title }}</p>
+                        <p class="mt-1 whitespace-pre-wrap text-slate-700">{{ note.body }}</p>
+                    </li>
+                </ul>
+                <p v-else class="mt-4 text-sm text-slate-500">No notes yet.</p>
+            </section>
+
+            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 class="text-lg font-semibold text-slate-950">Attachments</h2>
+
+                <form class="mt-4 space-y-4 border-b border-slate-100 pb-6" @submit.prevent="submitAttachment">
+                    <FormField label="File" for-id="attachment_file" :error="attachmentForm.errors.file">
+                        <input
+                            id="attachment_file"
+                            type="file"
+                            required
+                            class="block w-full text-sm text-slate-700 file:mr-4 file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-sm file:font-medium file:text-slate-800 hover:file:bg-slate-200"
+                            @change="onAttachmentChange"
+                        />
+                    </FormField>
+                    <button
+                        type="submit"
+                        :disabled="attachmentForm.processing"
+                        class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    >
+                        {{ attachmentForm.processing ? 'Uploading...' : 'Upload' }}
+                    </button>
+                </form>
+
+                <ul v-if="lead.attachments?.length" class="mt-4 divide-y divide-slate-100 text-sm">
+                    <li v-for="attachment in lead.attachments" :key="attachment.id" class="flex items-center justify-between gap-3 py-3">
+                        <span class="font-medium text-slate-900">{{ attachment.original_name }}</span>
+                        <Link
+                            :href="`/attachments/${attachment.id}/download`"
+                            class="text-teal-800 hover:underline"
+                        >
+                            Download
+                        </Link>
+                    </li>
+                </ul>
+                <p v-else class="mt-4 text-sm text-slate-500">No attachments yet.</p>
             </section>
         </div>
     </AppLayout>

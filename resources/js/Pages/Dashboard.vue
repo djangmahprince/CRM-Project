@@ -7,6 +7,14 @@ defineProps({
     metrics: Object,
     funnel: Array,
     revenueBySource: Array,
+    todaysTasks: {
+        type: Array,
+        default: () => [],
+    },
+    todaysEvents: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 function money(value) {
@@ -54,6 +62,36 @@ function money(value) {
                     </li>
                 </ul>
                 <p v-else class="mt-4 text-sm text-slate-500">No open opportunity amounts yet.</p>
+            </section>
+        </div>
+
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between gap-3">
+                    <h2 class="text-lg font-semibold text-slate-950">Today's tasks</h2>
+                    <Link href="/tasks" class="text-sm text-teal-700 hover:underline">All tasks</Link>
+                </div>
+                <ul v-if="todaysTasks.length" class="mt-4 divide-y divide-slate-100 text-sm">
+                    <li v-for="task in todaysTasks" :key="task.id" class="flex items-center justify-between gap-3 py-3">
+                        <Link :href="`/tasks/${task.id}`" class="font-medium text-teal-800 hover:underline">{{ task.subject }}</Link>
+                        <span class="text-slate-500">{{ task.status }}</span>
+                    </li>
+                </ul>
+                <p v-else class="mt-4 text-sm text-slate-500">No tasks due today.</p>
+            </section>
+
+            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between gap-3">
+                    <h2 class="text-lg font-semibold text-slate-950">Today's events</h2>
+                    <Link href="/calendar" class="text-sm text-teal-700 hover:underline">Calendar</Link>
+                </div>
+                <ul v-if="todaysEvents.length" class="mt-4 divide-y divide-slate-100 text-sm">
+                    <li v-for="event in todaysEvents" :key="event.id" class="flex items-center justify-between gap-3 py-3">
+                        <Link :href="`/events/${event.id}`" class="font-medium text-teal-800 hover:underline">{{ event.subject }}</Link>
+                        <span class="text-slate-500">{{ new Date(event.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+                    </li>
+                </ul>
+                <p v-else class="mt-4 text-sm text-slate-500">No events scheduled today.</p>
             </section>
         </div>
     </AppLayout>

@@ -82,6 +82,8 @@ class OpportunityController extends Controller
             'updatedBy:id,name',
             'account:id,name',
             'stageHistory' => fn ($q) => $q->latest()->limit(20)->with('changedBy:id,name'),
+            'notes' => fn ($q) => $q->latest()->limit(20),
+            'attachments' => fn ($q) => $q->latest()->limit(20),
         ]);
         $opportunity->append('expected_revenue');
         $opportunity->recordView($request->user());

@@ -77,6 +77,8 @@ class ContactController extends Controller
             'account:id,name',
             'reportsTo:id,first_name,last_name',
             'cases:id,contact_id,case_number,subject,status',
+            'notes' => fn ($q) => $q->latest()->limit(20),
+            'attachments' => fn ($q) => $q->latest()->limit(20),
         ]);
         $contact->recordView($request->user());
 
