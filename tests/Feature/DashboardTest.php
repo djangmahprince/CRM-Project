@@ -2,17 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Tests\Concerns\SeedsCrmRoles;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
     use LazilyRefreshDatabase;
+    use SeedsCrmRoles;
 
     public function test_dashboard_renders_an_inertia_page(): void
     {
-        $user = User::factory()->create();
+        $user = $this->userWithRole('Sales Representative');
 
         $this->actingAs($user);
 
@@ -22,6 +23,8 @@ class DashboardTest extends TestCase
         $response->assertInertia(fn ($page) => $page
             ->component('Dashboard')
             ->where('title', 'Good morning')
+            ->has('metrics')
+            ->has('funnel')
         );
     }
 }

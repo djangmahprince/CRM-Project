@@ -1,0 +1,15 @@
+/.git
+/.github
+/node_modules
+/vendor
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+.env
+.phpunit.result.cache
+npm-debug.log
+Dockerfile
+docker-compose.yml
+README.md
+docs

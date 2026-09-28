@@ -4,6 +4,7 @@ namespace App\Models\Concerns;
 
 use App\Models\RecentlyViewed;
 use App\Models\User;
+use App\Support\CrmRegistry;
 use Illuminate\Support\Facades\Auth;
 
 trait HasCrmAudit
@@ -35,10 +36,12 @@ trait HasCrmAudit
             return;
         }
 
+        $type = CrmRegistry::keyFor(static::class) ?? static::class;
+
         RecentlyViewed::query()->updateOrCreate(
             [
                 'user_id' => $user->id,
-                'viewable_type' => static::class,
+                'viewable_type' => $type,
                 'viewable_id' => $this->getKey(),
             ],
             ['viewed_at' => now()],

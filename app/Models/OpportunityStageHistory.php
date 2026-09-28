@@ -13,4 +13,9 @@ class OpportunityStageHistory extends Model
     {
         return $this->belongsTo(Opportunity::class);
     }
+
+    public function changedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'changed_by');
+    }
 }

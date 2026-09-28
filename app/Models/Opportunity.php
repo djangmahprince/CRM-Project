@@ -22,6 +22,8 @@ class Opportunity extends Model
         'next_step', 'description', 'is_closed', 'is_won', 'owner_id', 'created_by', 'updated_by',
     ];
 
+    protected $appends = ['expected_revenue'];
+
     protected function casts(): array
     {
         return [

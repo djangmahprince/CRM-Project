@@ -9,12 +9,14 @@ use App\Models\Event;
 use App\Models\Lead;
 use App\Models\Opportunity;
 use App\Models\Task;
+use App\Models\User;
 
 class CrmRegistry
 {
     public static function morphMap(): array
     {
         return [
+            'user' => User::class,
             'lead' => Lead::class,
             'account' => Account::class,
             'contact' => Contact::class,

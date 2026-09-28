@@ -1,5 +1,5 @@
 <script setup>
-import { Form } from '@inertiajs/vue3';
+import { Form, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -22,10 +22,13 @@ import { Form } from '@inertiajs/vue3';
                     <p v-if="errors.password" class="mt-2 text-sm text-red-700">{{ errors.password }}</p>
                 </div>
 
-                <label class="flex items-center gap-2 text-sm text-slate-600">
-                    <input name="remember" type="checkbox" value="1" class="size-4 accent-teal-700" />
-                    Remember me
-                </label>
+                <div class="flex items-center justify-between gap-4">
+                    <label class="flex items-center gap-2 text-sm text-slate-600">
+                        <input name="remember" type="checkbox" value="1" class="size-4 accent-teal-700" />
+                        Remember me
+                    </label>
+                    <Link href="/forgot-password" class="text-sm font-medium text-teal-700 hover:text-teal-800">Forgot password?</Link>
+                </div>
 
                 <button type="submit" :disabled="processing" class="w-full bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60">
                     {{ processing ? 'Signing in...' : 'Sign in' }}

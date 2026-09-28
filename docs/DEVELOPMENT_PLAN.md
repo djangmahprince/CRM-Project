@@ -188,7 +188,7 @@ Native mobile apps, workflow automation builder, custom objects, marketplace int
 
 ## Phase checklist
 
-- [ ] Phase 0 — Foundation
-- [ ] Phase 1 — P0 objects, search, home, basic reports
+- [x] Phase 0 — Foundation (auth, RBAC, sharing traits, layout, Docker/CI, Leads template started)
+- [x] Phase 1 — P0 objects, search, home, basic reports
 - [ ] Phase 2 — Conversion, calendar, notifications, report builder, import, attachments
 - [ ] Phase 3 — Hierarchy, advanced search, dashboards, API, MFA, GDPR
