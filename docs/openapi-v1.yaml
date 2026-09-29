@@ -70,6 +70,194 @@ paths:
       responses:
         '204':
           description: Deleted
+  /v1/accounts:
+    get:
+      summary: List visible accounts
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Paginated accounts
+    post:
+      summary: Create an account
+      security: [{ bearerAuth: [] }]
+      responses:
+        '201':
+          description: Account created
+  /v1/accounts/{id}:
+    get:
+      summary: Show an account
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Account
+    patch:
+      summary: Update an account
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Account updated
+    delete:
+      summary: Soft-delete an account
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Deleted
+  /v1/contacts:
+    get:
+      summary: List visible contacts
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Paginated contacts
+    post:
+      summary: Create a contact
+      security: [{ bearerAuth: [] }]
+      responses:
+        '201':
+          description: Contact created
+  /v1/contacts/{id}:
+    get:
+      summary: Show a contact
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Contact
+    patch:
+      summary: Update a contact
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Contact updated
+    delete:
+      summary: Soft-delete a contact
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Deleted
+  /v1/opportunities:
+    get:
+      summary: List visible opportunities
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Paginated opportunities
+    post:
+      summary: Create an opportunity
+      security: [{ bearerAuth: [] }]
+      responses:
+        '201':
+          description: Opportunity created
+  /v1/opportunities/{id}:
+    get:
+      summary: Show an opportunity
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Opportunity
+    patch:
+      summary: Update an opportunity
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Opportunity updated
+    delete:
+      summary: Soft-delete an opportunity
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Deleted
+  /v1/cases:
+    get:
+      summary: List visible cases
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Paginated cases
+    post:
+      summary: Create a case
+      security: [{ bearerAuth: [] }]
+      responses:
+        '201':
+          description: Case created
+  /v1/cases/{id}:
+    get:
+      summary: Show a case
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Case
+    patch:
+      summary: Update a case
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Case updated
+    delete:
+      summary: Soft-delete a case
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Deleted
 components:
   securitySchemes:
     bearerAuth:
