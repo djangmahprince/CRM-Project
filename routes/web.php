@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountHierarchyController;
 use App\Http\Controllers\AdvancedSearchController;
+use App\Http\Controllers\AssistantDismissalController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -47,6 +48,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth', EnsureSessionIsActive::class])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::post('/assistant/dismissals', [AssistantDismissalController::class, 'store'])->name('assistant.dismiss');
 
     Route::get('/search', [SearchController::class, 'index'])->name('search.index');
     Route::get('/search/suggest', [SearchController::class, 'suggest'])->name('search.suggest');

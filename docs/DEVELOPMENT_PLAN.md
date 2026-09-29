@@ -192,3 +192,4 @@ Native mobile apps, workflow automation builder, custom objects, marketplace int
 - [x] Phase 1 — P0 objects, search, home, basic reports
 - [x] Phase 2 — Conversion, calendar, notifications, report builder, import, attachments
 - [x] Phase 3 — Hierarchy, advanced search, dashboards, API, MFA, GDPR
+- [x] v1 hardening — Home Assistant, record-share tests, indexes, backup docs, admin GDPR nav

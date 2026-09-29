@@ -114,6 +114,13 @@ function goSearch() {
                         <Link href="/settings/mfa" class="text-sm font-medium text-slate-600 transition hover:text-slate-950">
                             MFA
                         </Link>
+                        <Link
+                            v-if="page.props.auth.roles?.includes('System Administrator')"
+                            href="/admin/gdpr"
+                            class="text-sm font-medium text-slate-600 transition hover:text-slate-950"
+                        >
+                            GDPR
+                        </Link>
                     </div>
                 </div>
 

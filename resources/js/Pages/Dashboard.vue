@@ -1,5 +1,5 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import AppLayout from '../Layouts/AppLayout.vue';
 
 defineProps({
@@ -15,15 +15,39 @@ defineProps({
         type: Array,
         default: () => [],
     },
+    assistantInsights: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 function money(value) {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
 }
+
+function dismiss(key) {
+    router.post('/assistant/dismissals', { key }, { preserveScroll: true });
+}
 </script>
 
 <template>
     <AppLayout :title="title || 'Good morning'">
+        <section v-if="assistantInsights.length" class="mb-8 border border-teal-200 bg-teal-50/60 p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-950">Assistant</h2>
+            <p class="mt-1 text-sm text-slate-600">Rule-based reminders — not AI predictions.</p>
+            <ul class="mt-4 divide-y divide-teal-100 text-sm">
+                <li v-for="insight in assistantInsights" :key="insight.key" class="flex flex-wrap items-start justify-between gap-3 py-3">
+                    <div>
+                        <Link :href="insight.url" class="font-medium text-teal-900 hover:underline">{{ insight.title }}</Link>
+                        <p class="mt-1 text-slate-600">{{ insight.body }}</p>
+                    </div>
+                    <button type="button" class="text-xs font-medium text-slate-500 hover:text-slate-800" @click="dismiss(insight.key)">
+                        Dismiss
+                    </button>
+                </li>
+            </ul>
+        </section>
+
         <div class="grid gap-5 md:grid-cols-3">
             <section class="border border-slate-200 bg-white p-6 shadow-sm">
                 <p class="text-sm font-medium text-slate-500">Open leads</p>

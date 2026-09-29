@@ -29,6 +29,7 @@ class DashboardTest extends TestCase
             ->has('funnel')
             ->has('todaysTasks')
             ->has('todaysEvents')
+            ->has('assistantInsights')
         );
     }
 

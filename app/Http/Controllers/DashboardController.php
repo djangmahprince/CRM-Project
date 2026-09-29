@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Lead;
 use App\Models\Opportunity;
 use App\Models\Task;
+use App\Support\HomeAssistant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -14,7 +15,7 @@ use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, HomeAssistant $assistant): Response
     {
         $user = $request->user();
         $today = now()->toDateString();
@@ -76,6 +77,7 @@ class DashboardController extends Controller
             'revenueBySource' => $revenueBySource,
             'todaysTasks' => $todaysTasks,
             'todaysEvents' => $todaysEvents,
+            'assistantInsights' => $assistant->insightsFor($user),
         ]);
     }
 }
