@@ -21,6 +21,6 @@ defineProps({
         <div class="mt-2">
             <slot />
         </div>
-        <p v-if="error" class="mt-2 text-sm text-red-700">{{ error }}</p>
+        <p v-if="error" class="mt-2 text-sm text-danger">{{ error }}</p>
     </div>
 </template>

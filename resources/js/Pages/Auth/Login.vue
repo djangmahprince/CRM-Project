@@ -1,39 +1,141 @@
 <script setup>
-import { Form, Link } from '@inertiajs/vue3';
+import { Form, Link, usePage } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
+import GuestLayout from '../../Layouts/GuestLayout.vue';
+
+const page = usePage();
+
+const props = defineProps({
+    tab: {
+        type: String,
+        default: 'login',
+    },
+});
+
+const activeTab = ref(props.tab === 'register' ? 'register' : 'login');
+
+watch(
+    () => props.tab,
+    (value) => {
+        activeTab.value = value === 'register' ? 'register' : 'login';
+    },
+);
+
+const hasRegisterErrors = computed(() => {
+    const errors = page.props.errors || {};
+    return ['name', 'email', 'password', 'password_confirmation', 'invitation_code']
+        .some((key) => Boolean(errors[key]));
+});
+
+watch(hasRegisterErrors, (value) => {
+    if (value) {
+        activeTab.value = 'register';
+    }
+}, { immediate: true });
 </script>
 
 <template>
-    <main class="flex min-h-screen items-center justify-center bg-slate-100 px-6 py-12">
-        <section class="w-full max-w-md border border-slate-200 bg-white p-8 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">Northstar CRM</p>
-            <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Sign in</h1>
-            <p class="mt-2 text-sm text-slate-600">Access your sales and service workspace.</p>
+    <GuestLayout
+        :title="activeTab === 'register' ? 'Create your account' : 'Welcome back'"
+        :subtitle="activeTab === 'register'
+            ? 'Use your invitation code to join the workspace.'
+            : 'Sign in to your sales and service workspace.'"
+    >
+        <div class="mb-6 flex rounded-pill bg-surface p-1">
+            <button
+                type="button"
+                class="flex-1 rounded-pill px-3 py-2 text-sm font-semibold transition"
+                :class="activeTab === 'login' ? 'bg-white text-brand shadow-sm' : 'text-slate-500 hover:text-slate-800'"
+                @click="activeTab = 'login'"
+            >
+                Login
+            </button>
+            <button
+                type="button"
+                class="flex-1 rounded-pill px-3 py-2 text-sm font-semibold transition"
+                :class="activeTab === 'register' ? 'bg-white text-brand shadow-sm' : 'text-slate-500 hover:text-slate-800'"
+                @click="activeTab = 'register'"
+            >
+                Create Account
+            </button>
+        </div>
 
-            <Form action="/login" method="post" class="mt-8 space-y-5" #default="{ errors, processing }">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
-                    <input id="email" name="email" type="email" autocomplete="email" required class="mt-2 block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100" />
-                    <p v-if="errors.email" class="mt-2 text-sm text-red-700">{{ errors.email }}</p>
-                </div>
+        <Form
+            v-if="activeTab === 'login'"
+            action="/login"
+            method="post"
+            class="space-y-5"
+            #default="{ errors, processing }"
+        >
+            <h2 class="text-2xl font-semibold tracking-tight text-slate-950">Sign in</h2>
 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="current-password" required class="mt-2 block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100" />
-                    <p v-if="errors.password" class="mt-2 text-sm text-red-700">{{ errors.password }}</p>
-                </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required class="ns-input mt-2" />
+                <p v-if="errors.email" class="mt-2 text-sm text-danger">{{ errors.email }}</p>
+            </div>
 
-                <div class="flex items-center justify-between gap-4">
-                    <label class="flex items-center gap-2 text-sm text-slate-600">
-                        <input name="remember" type="checkbox" value="1" class="size-4 accent-teal-700" />
-                        Remember me
-                    </label>
-                    <Link href="/forgot-password" class="text-sm font-medium text-teal-700 hover:text-teal-800">Forgot password?</Link>
-                </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required class="ns-input mt-2" />
+                <p v-if="errors.password" class="mt-2 text-sm text-danger">{{ errors.password }}</p>
+            </div>
 
-                <button type="submit" :disabled="processing" class="w-full bg-teal-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60">
-                    {{ processing ? 'Signing in...' : 'Sign in' }}
-                </button>
-            </Form>
-        </section>
-    </main>
+            <div class="flex items-center justify-between gap-4">
+                <label class="flex items-center gap-2 text-sm text-slate-600">
+                    <input name="remember" type="checkbox" value="1" class="size-4 accent-brand" />
+                    Remember me
+                </label>
+                <Link href="/forgot-password" class="ns-link text-sm">Forgot password?</Link>
+            </div>
+
+            <button type="submit" :disabled="processing" class="ns-btn-primary w-full py-3">
+                {{ processing ? 'Signing in...' : 'Sign in' }}
+            </button>
+        </Form>
+
+        <Form
+            v-else
+            action="/register"
+            method="post"
+            class="space-y-5"
+            #default="{ errors, processing }"
+        >
+            <h2 class="text-2xl font-semibold tracking-tight text-slate-950">Create Account</h2>
+            <p class="text-sm text-slate-600">Registration requires a valid invitation code.</p>
+
+            <div>
+                <label for="register_name" class="block text-sm font-medium text-slate-700">Name</label>
+                <input id="register_name" name="name" type="text" autocomplete="name" required class="ns-input mt-2" />
+                <p v-if="errors.name" class="mt-2 text-sm text-danger">{{ errors.name }}</p>
+            </div>
+
+            <div>
+                <label for="register_email" class="block text-sm font-medium text-slate-700">Email</label>
+                <input id="register_email" name="email" type="email" autocomplete="email" required class="ns-input mt-2" />
+                <p v-if="errors.email" class="mt-2 text-sm text-danger">{{ errors.email }}</p>
+            </div>
+
+            <div>
+                <label for="register_password" class="block text-sm font-medium text-slate-700">Password</label>
+                <input id="register_password" name="password" type="password" autocomplete="new-password" required class="ns-input mt-2" />
+                <p v-if="errors.password" class="mt-2 text-sm text-danger">{{ errors.password }}</p>
+            </div>
+
+            <div>
+                <label for="register_password_confirmation" class="block text-sm font-medium text-slate-700">Confirm password</label>
+                <input id="register_password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required class="ns-input mt-2" />
+            </div>
+
+            <div>
+                <label for="invitation_code" class="block text-sm font-medium text-slate-700">Invitation code</label>
+                <input id="invitation_code" name="invitation_code" type="text" autocomplete="off" required class="ns-input mt-2" />
+                <p v-if="errors.invitation_code" class="mt-2 text-sm text-danger">{{ errors.invitation_code }}</p>
+            </div>
+
+            <button type="submit" :disabled="processing" class="ns-btn-primary w-full py-3">
+                {{ processing ? 'Creating account...' : 'Create account' }}
+            </button>
+        </Form>
+    </GuestLayout>
 </template>

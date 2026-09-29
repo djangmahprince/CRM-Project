@@ -98,7 +98,7 @@ function deleteSaved(id) {
 
             <div class="mt-4 flex flex-wrap gap-3">
                 <button type="button" class="border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50" @click="addCondition">Add condition</button>
-                <button type="button" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800" @click="runSearch">Run search</button>
+                <button type="button" class="ns-btn-primary" @click="runSearch">Run search</button>
             </div>
 
             <div class="mt-6 flex flex-wrap items-end gap-3 border-t border-slate-100 pt-4">
@@ -115,7 +115,7 @@ function deleteSaved(id) {
                 <h2 class="text-lg font-semibold text-slate-950">Results</h2>
                 <ul v-if="results.length" class="mt-4 divide-y divide-slate-100 text-sm">
                     <li v-for="row in results" :key="row.id" class="py-3">
-                        <Link :href="row.url" class="font-medium text-teal-800 hover:underline">{{ row.label }}</Link>
+                        <Link :href="row.url" class="font-medium ns-link">{{ row.label }}</Link>
                         <p v-if="row.subtitle" class="text-slate-500">{{ row.subtitle }}</p>
                     </li>
                 </ul>
@@ -126,7 +126,7 @@ function deleteSaved(id) {
                 <h2 class="text-lg font-semibold text-slate-950">Saved searches</h2>
                 <ul v-if="savedSearches.length" class="mt-4 divide-y divide-slate-100 text-sm">
                     <li v-for="search in savedSearches" :key="search.id" class="flex items-center justify-between gap-2 py-3">
-                        <button type="button" class="text-left font-medium text-teal-800 hover:underline" @click="loadSaved(search)">
+                        <button type="button" class="text-left font-medium ns-link" @click="loadSaved(search)">
                             {{ search.name }}
                         </button>
                         <button type="button" class="text-red-600 hover:underline" @click="deleteSaved(search.id)">Delete</button>

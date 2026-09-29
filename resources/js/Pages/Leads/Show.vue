@@ -8,7 +8,7 @@ const props = defineProps({
     can: Object,
 });
 
-const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+const inputClass = 'ns-input';
 
 const name = [props.lead.first_name, props.lead.last_name].filter(Boolean).join(' ');
 
@@ -67,32 +67,32 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
             <Link
                 v-if="can.convert"
                 :href="`/leads/${lead.id}/convert`"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 Convert
             </Link>
             <Link
                 v-if="can.update"
                 :href="`/leads/${lead.id}/edit`"
-                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                class="ns-btn-secondary"
             >
                 Edit
             </Link>
             <Link
                 :href="logCallHref"
-                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                class="ns-btn-secondary"
             >
                 Log a Call
             </Link>
             <button
                 v-if="can.delete"
                 type="button"
-                class="border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                class="ns-btn-danger"
                 @click="destroyLead"
             >
                 Delete
             </button>
-            <Link href="/leads" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <Link href="/leads" class="ns-btn-secondary">
                 Back to list
             </Link>
         </div>
@@ -102,19 +102,19 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
             <span v-if="lead.convertedAccount || lead.convertedContact || lead.convertedOpportunity" class="mt-2 block">
                 <span v-if="lead.convertedAccount">
                     Account:
-                    <Link :href="`/accounts/${lead.convertedAccount.id}`" class="font-medium text-teal-900 underline">
+                    <Link :href="`/accounts/${lead.convertedAccount.id}`" class="ns-link">
                         {{ lead.convertedAccount.name }}
                     </Link>
                 </span>
                 <span v-if="lead.convertedContact" class="ml-0 block sm:ml-4 sm:inline">
                     Contact:
-                    <Link :href="`/contacts/${lead.convertedContact.id}`" class="font-medium text-teal-900 underline">
+                    <Link :href="`/contacts/${lead.convertedContact.id}`" class="ns-link">
                         {{ contactName(lead.convertedContact) }}
                     </Link>
                 </span>
                 <span v-if="lead.convertedOpportunity" class="ml-0 block sm:ml-4 sm:inline">
                     Opportunity:
-                    <Link :href="`/opportunities/${lead.convertedOpportunity.id}`" class="font-medium text-teal-900 underline">
+                    <Link :href="`/opportunities/${lead.convertedOpportunity.id}`" class="ns-link">
                         {{ lead.convertedOpportunity.name }}
                     </Link>
                 </span>
@@ -122,7 +122,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
         </div>
 
         <div class="grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Lead details</h2>
                 <dl class="mt-4 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                     <div>
@@ -156,7 +156,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
                 </dl>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Ownership</h2>
                 <dl class="mt-4 space-y-4 text-sm">
                     <div>
@@ -176,7 +176,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
         </div>
 
         <div class="mt-6 grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Notes</h2>
 
                 <form class="mt-4 space-y-4 border-b border-slate-100 pb-6" @submit.prevent="submitNote">
@@ -189,7 +189,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
                     <button
                         type="submit"
                         :disabled="noteForm.processing"
-                        class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                        class="ns-btn-primary disabled:opacity-60"
                     >
                         {{ noteForm.processing ? 'Saving...' : 'Add note' }}
                     </button>
@@ -204,7 +204,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
                 <p v-else class="mt-4 text-sm text-slate-500">No notes yet.</p>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Attachments</h2>
 
                 <form class="mt-4 space-y-4 border-b border-slate-100 pb-6" @submit.prevent="submitAttachment">
@@ -220,7 +220,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
                     <button
                         type="submit"
                         :disabled="attachmentForm.processing"
-                        class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                        class="ns-btn-primary disabled:opacity-60"
                     >
                         {{ attachmentForm.processing ? 'Uploading...' : 'Upload' }}
                     </button>
@@ -231,7 +231,7 @@ const logCallHref = `/tasks/create?related_type=lead&related_id=${props.lead.id}
                         <span class="font-medium text-slate-900">{{ attachment.original_name }}</span>
                         <Link
                             :href="`/attachments/${attachment.id}/download`"
-                            class="text-teal-800 hover:underline"
+                            class="ns-link"
                         >
                             Download
                         </Link>

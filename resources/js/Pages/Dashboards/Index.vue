@@ -18,7 +18,7 @@ function destroyDashboard(id) {
     <AppLayout title="Dashboards">
         <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
             <p class="text-sm text-slate-600">Custom dashboards with report widgets.</p>
-            <Link href="/crm-dashboards/create" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">
+            <Link href="/crm-dashboards/create" class="ns-btn-primary">
                 New dashboard
             </Link>
         </div>
@@ -37,7 +37,7 @@ function destroyDashboard(id) {
                 <tbody class="divide-y divide-slate-100">
                     <tr v-for="dashboard in dashboards" :key="dashboard.id" class="hover:bg-slate-50">
                         <td class="px-4 py-3">
-                            <Link :href="`/crm-dashboards/${dashboard.id}`" class="font-medium text-teal-800 hover:underline">
+                            <Link :href="`/crm-dashboards/${dashboard.id}`" class="font-medium ns-link">
                                 {{ dashboard.name }}
                             </Link>
                         </td>

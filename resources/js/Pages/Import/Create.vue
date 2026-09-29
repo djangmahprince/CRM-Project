@@ -10,7 +10,7 @@ const props = defineProps({
     fields: Array,
 });
 
-const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand-light';
 
 const fileChosen = ref(false);
 const columnIndexes = [0, 1, 2, 3, 4, 5];
@@ -89,7 +89,7 @@ function submit() {
                 <button
                     type="submit"
                     :disabled="form.processing || !fileChosen"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    class="ns-btn-primary disabled:opacity-60"
                 >
                     {{ form.processing ? 'Importing...' : 'Import' }}
                 </button>

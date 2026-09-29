@@ -28,27 +28,27 @@ function destroyAccount() {
             <Link
                 v-if="can.update"
                 :href="`/accounts/${account.id}/edit`"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 Edit
             </Link>
             <button
                 v-if="can.delete"
                 type="button"
-                class="border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                class="ns-btn-danger"
                 @click="destroyAccount"
             >
                 Delete
             </button>
-            <Link href="/accounts" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <Link href="/accounts" class="ns-btn-secondary">
                 Back to list
             </Link>
-            <Link href="/accounts/hierarchy" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <Link href="/accounts/hierarchy" class="ns-btn-secondary">
                 Hierarchy
             </Link>
         </div>
 
-        <section v-if="rollups" class="mb-6 border border-slate-200 bg-white p-6 shadow-sm">
+        <section v-if="rollups" class="mb-6 ns-card p-6">
             <h2 class="text-lg font-semibold text-slate-950">Hierarchy rollups</h2>
             <dl class="mt-4 grid gap-4 text-sm sm:grid-cols-3">
                 <div>
@@ -66,13 +66,13 @@ function destroyAccount() {
             </dl>
             <ul v-if="account.children?.length" class="mt-4 divide-y divide-slate-100 text-sm">
                 <li v-for="child in account.children" :key="child.id" class="py-2">
-                    <Link :href="`/accounts/${child.id}`" class="font-medium text-teal-800 hover:underline">{{ child.name }}</Link>
+                    <Link :href="`/accounts/${child.id}`" class="font-medium ns-link">{{ child.name }}</Link>
                 </li>
             </ul>
         </section>
 
         <div class="grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Account details</h2>
                 <dl class="mt-4 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                     <div>
@@ -105,7 +105,7 @@ function destroyAccount() {
                             <Link
                                 v-if="account.parentAccount"
                                 :href="`/accounts/${account.parentAccount.id}`"
-                                class="text-teal-800 hover:underline"
+                                class="ns-link"
                             >
                                 {{ account.parentAccount.name }}
                             </Link>
@@ -119,7 +119,7 @@ function destroyAccount() {
                 </dl>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Ownership</h2>
                 <dl class="mt-4 space-y-4 text-sm">
                     <div>
@@ -139,19 +139,19 @@ function destroyAccount() {
         </div>
 
         <div class="mt-6 grid gap-6 lg:grid-cols-3">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-slate-950">Contacts</h2>
                     <Link
                         :href="`/contacts/create?account_id=${account.id}`"
-                        class="text-sm font-medium text-teal-800 hover:underline"
+                        class="text-sm font-medium ns-link"
                     >
                         New
                     </Link>
                 </div>
                 <ul v-if="account.contacts?.length" class="divide-y divide-slate-100 text-sm">
                     <li v-for="contact in account.contacts" :key="contact.id" class="py-2">
-                        <Link :href="`/contacts/${contact.id}`" class="font-medium text-teal-800 hover:underline">
+                        <Link :href="`/contacts/${contact.id}`" class="font-medium ns-link">
                             {{ contactName(contact) }}
                         </Link>
                         <p class="text-slate-600">{{ contact.title || contact.email || '—' }}</p>
@@ -160,19 +160,19 @@ function destroyAccount() {
                 <p v-else class="text-sm text-slate-500">No related contacts.</p>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-slate-950">Opportunities</h2>
                     <Link
                         :href="`/opportunities/create?account_id=${account.id}`"
-                        class="text-sm font-medium text-teal-800 hover:underline"
+                        class="text-sm font-medium ns-link"
                     >
                         New
                     </Link>
                 </div>
                 <ul v-if="account.opportunities?.length" class="divide-y divide-slate-100 text-sm">
                     <li v-for="opportunity in account.opportunities" :key="opportunity.id" class="py-2">
-                        <Link :href="`/opportunities/${opportunity.id}`" class="font-medium text-teal-800 hover:underline">
+                        <Link :href="`/opportunities/${opportunity.id}`" class="font-medium ns-link">
                             {{ opportunity.name }}
                         </Link>
                         <p class="text-slate-600">{{ opportunity.stage }} · {{ opportunity.amount ?? '—' }}</p>
@@ -181,19 +181,19 @@ function destroyAccount() {
                 <p v-else class="text-sm text-slate-500">No related opportunities.</p>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <div class="mb-4 flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-slate-950">Cases</h2>
                     <Link
                         :href="`/cases/create?account_id=${account.id}`"
-                        class="text-sm font-medium text-teal-800 hover:underline"
+                        class="text-sm font-medium ns-link"
                     >
                         New
                     </Link>
                 </div>
                 <ul v-if="account.cases?.length" class="divide-y divide-slate-100 text-sm">
                     <li v-for="caseItem in account.cases" :key="caseItem.id" class="py-2">
-                        <Link :href="`/cases/${caseItem.id}`" class="font-medium text-teal-800 hover:underline">
+                        <Link :href="`/cases/${caseItem.id}`" class="font-medium ns-link">
                             {{ caseItem.case_number }}
                         </Link>
                         <p class="text-slate-600">{{ caseItem.subject }} · {{ caseItem.status }}</p>

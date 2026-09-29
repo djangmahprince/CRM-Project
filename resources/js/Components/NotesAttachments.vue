@@ -53,23 +53,23 @@ function submitAttachment() {
 
 <template>
     <div class="mt-8 grid gap-6 lg:grid-cols-2">
-        <section class="border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="ns-card p-6">
             <h2 class="text-lg font-semibold text-slate-950">Notes</h2>
             <form class="mt-4 space-y-3" @submit.prevent="submitNote">
                 <input
                     v-model="noteForm.title"
                     type="text"
                     placeholder="Title (optional)"
-                    class="block w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+                    class="ns-input"
                 />
                 <textarea
                     v-model="noteForm.body"
                     rows="3"
                     required
                     placeholder="Add a note"
-                    class="block w-full border border-slate-300 px-3 py-2 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+                    class="ns-input"
                 />
-                <button type="submit" :disabled="noteForm.processing" class="bg-teal-700 px-3 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60">
+                <button type="submit" :disabled="noteForm.processing" class="ns-btn-primary">
                     Save note
                 </button>
             </form>
@@ -82,7 +82,7 @@ function submitAttachment() {
             <p v-else class="mt-4 text-sm text-slate-500">No notes yet.</p>
         </section>
 
-        <section class="border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="ns-card p-6">
             <h2 class="text-lg font-semibold text-slate-950">Attachments</h2>
             <form class="mt-4 space-y-3" @submit.prevent="submitAttachment">
                 <input
@@ -90,7 +90,7 @@ function submitAttachment() {
                     class="block w-full text-sm"
                     @change="attachmentForm.file = $event.target.files[0]"
                 />
-                <button type="submit" :disabled="attachmentForm.processing || !attachmentForm.file" class="bg-teal-700 px-3 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60">
+                <button type="submit" :disabled="attachmentForm.processing || !attachmentForm.file" class="ns-btn-primary">
                     Upload
                 </button>
             </form>
@@ -102,13 +102,13 @@ function submitAttachment() {
                             :href="`/attachments/${attachment.id}/preview`"
                             target="_blank"
                             rel="noopener"
-                            class="font-medium text-teal-700 hover:underline"
+                            class="ns-link"
                         >
                             Preview
                         </a>
                         <a
                             :href="`/attachments/${attachment.id}/download`"
-                            class="font-medium text-teal-700 hover:underline"
+                            class="ns-link"
                         >
                             Download
                         </a>

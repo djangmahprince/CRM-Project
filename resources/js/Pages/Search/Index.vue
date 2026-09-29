@@ -38,9 +38,9 @@ function filterLink(key) {
                 v-model="query"
                 type="search"
                 placeholder="Search CRM records (min. 2 characters)"
-                class="min-w-[18rem] flex-1 border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+                class="min-w-[18rem] flex-1 border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand-light"
             />
-            <button type="submit" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">
+            <button type="submit" class="ns-btn-primary">
                 Search
             </button>
             <Link href="/search/advanced" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
@@ -53,7 +53,7 @@ function filterLink(key) {
                 href="/search"
                 :data="filterLink('')"
                 class="border px-3 py-1.5 text-sm"
-                :class="!object ? 'border-teal-600 bg-teal-50 text-teal-900' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
+                :class="!object ? 'border-brand bg-brand-light text-brand-dark' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
             >
                 All
             </Link>
@@ -63,7 +63,7 @@ function filterLink(key) {
                 href="/search"
                 :data="filterLink(key)"
                 class="border px-3 py-1.5 text-sm capitalize"
-                :class="object === key ? 'border-teal-600 bg-teal-50 text-teal-900' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
+                :class="object === key ? 'border-brand bg-brand-light text-brand-dark' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
             >
                 {{ objectLabel(key) }}
             </Link>
@@ -83,7 +83,7 @@ function filterLink(key) {
                     <ul class="mt-4 divide-y divide-slate-100">
                         <li v-for="row in results[key]" :key="`${row.object}-${row.id}`" class="py-3">
                             <Link :href="row.url" class="block hover:bg-slate-50">
-                                <span class="font-medium text-teal-800">{{ row.label }}</span>
+                                <span class="font-medium text-brand">{{ row.label }}</span>
                                 <span v-if="row.subtitle" class="mt-0.5 block text-sm text-slate-600">{{ row.subtitle }}</span>
                             </Link>
                         </li>

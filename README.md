@@ -1,4 +1,4 @@
-# Northstar CRM — Sales & Service Cloud
+# NorthStar — Sales & Service Cloud
 
 Web CRM built with **Laravel**, **Vue 3**, and **Inertia** covering Sales Cloud (Leads, Accounts, Contacts, Opportunities), Service Cloud (Cases), productivity (Tasks, Calendar), analytics (Reports, Dashboards), search, import/export, MFA, GDPR admin tools, and a versioned JSON API.
 

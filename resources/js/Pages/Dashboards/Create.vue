@@ -54,7 +54,7 @@ function submit() {
             <div class="space-y-3 border-t border-slate-100 pt-4">
                 <div class="flex items-center justify-between">
                     <h2 class="font-semibold text-slate-950">Widgets</h2>
-                    <button type="button" class="text-sm text-teal-700 hover:underline" @click="addWidget">Add widget</button>
+                    <button type="button" class="text-sm ns-link" @click="addWidget">Add widget</button>
                 </div>
                 <div v-for="(widget, index) in form.widgets" :key="index" class="grid gap-3 md:grid-cols-3">
                     <input v-model="widget.title" class="border border-slate-300 px-3 py-2 text-sm" placeholder="Title" />
@@ -70,7 +70,7 @@ function submit() {
                 </div>
             </div>
 
-            <button type="submit" :disabled="form.processing" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60">
+            <button type="submit" :disabled="form.processing" class="ns-btn-primary disabled:opacity-60">
                 Create dashboard
             </button>
         </form>

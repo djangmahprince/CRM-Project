@@ -121,7 +121,7 @@ function submit() {
                 <div class="md:col-span-2">
                     <button
                         type="submit"
-                        class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
+                        class="ns-btn-primary disabled:opacity-50"
                         :disabled="form.processing || !can.create"
                     >
                         Create rule
@@ -154,7 +154,7 @@ function submit() {
                             create_task → {{ rule.subject_template }}
                         </td>
                         <td class="px-4 py-3">
-                            <span :class="rule.enabled ? 'text-teal-700' : 'text-slate-400'">
+                            <span :class="rule.enabled ? 'text-brand' : 'text-slate-400'">
                                 {{ rule.enabled ? 'Enabled' : 'Disabled' }}
                             </span>
                         </td>

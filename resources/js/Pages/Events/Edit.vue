@@ -10,7 +10,7 @@ const props = defineProps({
     users: Array,
 });
 
-const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand-light';
 
 function toDatetimeLocal(value) {
     if (!value) {
@@ -63,14 +63,14 @@ function submit() {
 
                 <div>
                     <label class="inline-flex items-center gap-2 text-sm text-slate-700">
-                        <input v-model="form.all_day" type="checkbox" class="rounded border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.all_day" type="checkbox" class="rounded border-slate-300 text-brand focus:ring-brand" />
                         All day
                     </label>
                 </div>
 
                 <div>
                     <label class="inline-flex items-center gap-2 text-sm text-slate-700">
-                        <input v-model="form.is_private" type="checkbox" class="rounded border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.is_private" type="checkbox" class="rounded border-slate-300 text-brand focus:ring-brand" />
                         Private
                     </label>
                 </div>
@@ -105,7 +105,7 @@ function submit() {
                 <button
                     type="submit"
                     :disabled="form.processing"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    class="ns-btn-primary disabled:opacity-60"
                 >
                     {{ form.processing ? 'Saving...' : 'Save' }}
                 </button>

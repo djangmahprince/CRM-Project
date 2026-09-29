@@ -49,7 +49,7 @@ function submit() {
                 <button
                     type="submit"
                     :disabled="form.processing"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    class="ns-btn-primary disabled:opacity-60"
                 >
                     {{ form.processing ? 'Saving...' : 'Save' }}
                 </button>

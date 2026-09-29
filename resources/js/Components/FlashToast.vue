@@ -20,7 +20,7 @@ watch(message, (value) => {
 <template>
     <div
         v-if="visible && message"
-        class="fixed bottom-6 right-6 z-50 max-w-sm border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900 shadow-sm"
+        class="fixed bottom-6 right-6 z-50 max-w-sm rounded-card border border-brand-light bg-brand-light px-4 py-3 text-sm text-brand-dark shadow-card"
         role="status"
     >
         {{ message }}

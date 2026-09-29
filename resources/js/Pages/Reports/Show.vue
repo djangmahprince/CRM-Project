@@ -21,7 +21,7 @@ defineProps({
             <div class="flex flex-wrap gap-3">
                 <Link
                     :href="`/reports/${report}/export?format=csv`"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                    class="ns-btn-primary"
                 >
                     Export CSV
                 </Link>

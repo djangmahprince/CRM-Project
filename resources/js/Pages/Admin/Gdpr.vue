@@ -31,7 +31,7 @@ function anonymize(user) {
                         <td class="px-4 py-3">{{ user.name }}</td>
                         <td class="px-4 py-3">{{ user.email }}</td>
                         <td class="px-4 py-3 text-right space-x-3">
-                            <a :href="`/admin/gdpr/${user.id}/export`" class="font-medium text-teal-700 hover:underline">Export</a>
+                            <a :href="`/admin/gdpr/${user.id}/export`" class="font-medium ns-link">Export</a>
                             <button type="button" class="font-medium text-red-600 hover:underline" @click="anonymize(user)">Anonymize</button>
                         </td>
                     </tr>

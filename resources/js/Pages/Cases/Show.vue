@@ -39,14 +39,14 @@ function contactName(contact) {
             <Link
                 v-if="can.update"
                 :href="`/cases/${caseRecord.id}/edit`"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 Edit
             </Link>
             <button
                 v-if="can.close"
                 type="button"
-                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                class="ns-btn-secondary"
                 @click="closeCase"
             >
                 Close case
@@ -54,7 +54,7 @@ function contactName(contact) {
             <button
                 v-if="can.reopen"
                 type="button"
-                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                class="ns-btn-secondary"
                 @click="reopenCase"
             >
                 Reopen case
@@ -62,18 +62,18 @@ function contactName(contact) {
             <button
                 v-if="can.delete"
                 type="button"
-                class="border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                class="ns-btn-danger"
                 @click="destroyCase"
             >
                 Delete
             </button>
-            <Link href="/cases" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <Link href="/cases" class="ns-btn-secondary">
                 Back to list
             </Link>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Case details</h2>
                 <dl class="mt-4 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                     <div>
@@ -106,7 +106,7 @@ function contactName(contact) {
                             <Link
                                 v-if="caseRecord.account"
                                 :href="`/accounts/${caseRecord.account.id}`"
-                                class="text-teal-800 hover:underline"
+                                class="ns-link"
                             >
                                 {{ caseRecord.account.name }}
                             </Link>
@@ -119,7 +119,7 @@ function contactName(contact) {
                             <Link
                                 v-if="caseRecord.contact"
                                 :href="`/contacts/${caseRecord.contact.id}`"
-                                class="text-teal-800 hover:underline"
+                                class="ns-link"
                             >
                                 {{ contactName(caseRecord.contact) }}
                             </Link>
@@ -133,7 +133,7 @@ function contactName(contact) {
                 </dl>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Ownership</h2>
                 <dl class="mt-4 space-y-4 text-sm">
                     <div>

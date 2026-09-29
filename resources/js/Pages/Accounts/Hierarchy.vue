@@ -20,7 +20,7 @@ defineProps({
             <ul v-if="tree.length" class="mt-4 space-y-3 text-sm">
                 <li v-for="node in tree" :key="node.id">
                     <div class="flex flex-wrap items-baseline gap-2">
-                        <Link :href="`/accounts/${node.id}`" class="font-medium text-teal-800 hover:underline">{{ node.name }}</Link>
+                        <Link :href="`/accounts/${node.id}`" class="font-medium ns-link">{{ node.name }}</Link>
                         <span class="text-slate-500">
                             rollup: {{ node.rollups.account_count }} accounts ·
                             {{ node.rollups.total_employees }} employees ·
@@ -29,11 +29,11 @@ defineProps({
                     </div>
                     <ul v-if="node.children?.length" class="mt-2 space-y-2 border-l border-slate-200 pl-4">
                         <li v-for="child in node.children" :key="child.id">
-                            <Link :href="`/accounts/${child.id}`" class="font-medium text-teal-800 hover:underline">{{ child.name }}</Link>
+                            <Link :href="`/accounts/${child.id}`" class="font-medium ns-link">{{ child.name }}</Link>
                             <span class="ml-2 text-slate-500">{{ child.rollups.account_count }} in subtree</span>
                             <ul v-if="child.children?.length" class="mt-2 space-y-2 border-l border-slate-200 pl-4">
                                 <li v-for="grand in child.children" :key="grand.id">
-                                    <Link :href="`/accounts/${grand.id}`" class="text-teal-800 hover:underline">{{ grand.name }}</Link>
+                                    <Link :href="`/accounts/${grand.id}`" class="ns-link">{{ grand.name }}</Link>
                                 </li>
                             </ul>
                         </li>

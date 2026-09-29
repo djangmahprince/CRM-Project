@@ -12,7 +12,7 @@ const props = defineProps({
     contacts: Array,
 });
 
-const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand-light';
 
 const form = useForm({
     subject: props.caseRecord.subject ?? '',
@@ -108,7 +108,7 @@ function contactLabel(contact) {
                 <button
                     type="submit"
                     :disabled="form.processing"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    class="ns-btn-primary disabled:opacity-60"
                 >
                     {{ form.processing ? 'Saving...' : 'Save' }}
                 </button>

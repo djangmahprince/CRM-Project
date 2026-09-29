@@ -16,7 +16,7 @@ defineProps({
     },
 });
 
-const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+const inputClass = 'ns-input';
 </script>
 
 <template>

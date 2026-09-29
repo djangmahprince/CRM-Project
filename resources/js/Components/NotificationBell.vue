@@ -25,16 +25,18 @@ function openNotification(item) {
     <div class="relative">
         <button
             type="button"
-            class="relative rounded px-2 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-950"
+            class="relative inline-flex items-center justify-center rounded-full p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
             aria-haspopup="true"
             :aria-expanded="open"
             aria-label="Notifications"
             @click="toggle"
         >
-            Alerts
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9" />
+            </svg>
             <span
                 v-if="unread > 0"
-                class="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-teal-700 px-1.5 text-[11px] font-semibold text-white"
+                class="absolute -right-0.5 -top-0.5 inline-flex min-w-5 items-center justify-center rounded-full bg-brand px-1.5 text-[10px] font-semibold text-white"
             >
                 {{ unread > 99 ? '99+' : unread }}
             </span>
@@ -42,7 +44,7 @@ function openNotification(item) {
 
         <div
             v-if="open"
-            class="absolute right-0 z-30 mt-2 w-80 border border-slate-200 bg-white shadow-lg"
+            class="absolute right-0 z-30 mt-2 w-80 overflow-hidden rounded-card border border-slate-200 bg-white shadow-card"
             role="menu"
         >
             <div class="flex items-center justify-between border-b border-slate-100 px-3 py-2">
@@ -50,13 +52,13 @@ function openNotification(item) {
                 <button
                     v-if="unread > 0"
                     type="button"
-                    class="text-xs font-medium text-teal-700 hover:underline"
+                    class="ns-link text-xs"
                     @click="markAll"
                 >
                     Mark all read
                 </button>
             </div>
-            <ul v-if="recent.length" class="max-h-80 overflow-y-auto divide-y divide-slate-100">
+            <ul v-if="recent.length" class="max-h-80 divide-y divide-slate-100 overflow-y-auto">
                 <li v-for="item in recent" :key="item.id">
                     <button
                         type="button"
@@ -71,7 +73,7 @@ function openNotification(item) {
             </ul>
             <p v-else class="px-3 py-6 text-sm text-slate-500">No notifications yet.</p>
             <div class="border-t border-slate-100 px-3 py-2">
-                <Link href="/notifications" class="text-sm font-medium text-teal-700 hover:underline" @click="open = false">
+                <Link href="/notifications" class="ns-link text-sm" @click="open = false">
                     View all
                 </Link>
             </div>

@@ -37,7 +37,7 @@ function disable() {
                 <form class="space-y-3" @submit.prevent="enable">
                     <input v-model="confirmForm.code" maxlength="6" required placeholder="123456" class="w-full border border-slate-300 px-3 py-2 text-sm" />
                     <p v-if="confirmForm.errors.code" class="text-sm text-red-600">{{ confirmForm.errors.code }}</p>
-                    <button type="submit" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">Enable MFA</button>
+                    <button type="submit" class="ns-btn-primary">Enable MFA</button>
                 </form>
             </div>
 

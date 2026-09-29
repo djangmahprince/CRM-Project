@@ -1,5 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import GuestLayout from '../../Layouts/GuestLayout.vue';
 
 const form = useForm({ code: '' });
 
@@ -9,21 +10,27 @@ function submit() {
 </script>
 
 <template>
-    <div class="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-        <form class="w-full max-w-sm border border-slate-200 bg-white p-6 shadow-sm" @submit.prevent="submit">
-            <h1 class="text-xl font-semibold text-slate-950">Verify authentication code</h1>
-            <p class="mt-2 text-sm text-slate-600">Enter the 6-digit code from your authenticator app.</p>
-            <input
-                v-model="form.code"
-                maxlength="6"
-                required
-                class="mt-4 w-full border border-slate-300 px-3 py-2 text-sm"
-                placeholder="123456"
-            />
-            <p v-if="form.errors.code" class="mt-2 text-sm text-red-600">{{ form.errors.code }}</p>
-            <button type="submit" class="mt-4 w-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">
-                Continue
+    <GuestLayout title="Verify your identity" subtitle="Enter the 6-digit code from your authenticator app.">
+        <h2 class="text-2xl font-semibold tracking-tight text-slate-950">Authentication code</h2>
+        <p class="mt-2 text-sm text-slate-600">Complete multi-factor authentication to continue.</p>
+
+        <form class="mt-8 space-y-5" @submit.prevent="submit">
+            <div>
+                <label for="mfa_code" class="block text-sm font-medium text-slate-700">Code</label>
+                <input
+                    id="mfa_code"
+                    v-model="form.code"
+                    maxlength="6"
+                    required
+                    class="ns-input mt-2"
+                    placeholder="123456"
+                    autocomplete="one-time-code"
+                />
+                <p v-if="form.errors.code" class="mt-2 text-sm text-danger">{{ form.errors.code }}</p>
+            </div>
+            <button type="submit" :disabled="form.processing" class="ns-btn-primary w-full py-3">
+                {{ form.processing ? 'Verifying...' : 'Continue' }}
             </button>
         </form>
-    </div>
+    </GuestLayout>
 </template>

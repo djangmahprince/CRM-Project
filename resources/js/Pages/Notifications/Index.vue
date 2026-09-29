@@ -47,13 +47,13 @@ function openNotification(item) {
                 <div class="flex gap-2">
                     <span
                         class="rounded px-2 py-1 text-xs font-medium"
-                        :class="item.read_at ? 'bg-slate-100 text-slate-600' : 'bg-teal-50 text-teal-800'"
+                        :class="item.read_at ? 'bg-slate-100 text-slate-600' : 'bg-brand-light text-brand'"
                     >
                         {{ item.read_at ? 'Read' : 'Unread' }}
                     </span>
                     <button
                         type="button"
-                        class="text-sm font-medium text-teal-700 hover:underline"
+                        class="text-sm font-medium ns-link"
                         @click="openNotification(item)"
                     >
                         Open

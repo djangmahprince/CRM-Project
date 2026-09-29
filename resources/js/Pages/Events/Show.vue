@@ -55,7 +55,7 @@ function relatedLabel() {
             <Link
                 v-if="can.update"
                 :href="`/events/${event.id}/edit`"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 Edit
             </Link>
@@ -110,7 +110,7 @@ function relatedLabel() {
                             <Link
                                 v-if="event.related_type && event.related_id && relatedHref(event.related_type, event.related_id)"
                                 :href="relatedHref(event.related_type, event.related_id)"
-                                class="text-teal-800 hover:underline"
+                                class="ns-link"
                             >
                                 {{ relatedLabel() }}
                             </Link>

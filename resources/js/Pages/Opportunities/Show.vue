@@ -41,14 +41,14 @@ function setStage(stage) {
             <Link
                 v-if="can.update"
                 :href="`/opportunities/${opportunity.id}/edit`"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 Edit
             </Link>
             <button
                 v-if="can.clone"
                 type="button"
-                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                class="ns-btn-secondary"
                 @click="cloneOpportunity"
             >
                 Clone
@@ -56,17 +56,17 @@ function setStage(stage) {
             <button
                 v-if="can.delete"
                 type="button"
-                class="border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                class="ns-btn-danger"
                 @click="destroyOpportunity"
             >
                 Delete
             </button>
-            <Link href="/opportunities" class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <Link href="/opportunities" class="ns-btn-secondary">
                 Back to list
             </Link>
         </div>
 
-        <section class="mb-6 border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="mb-6 ns-card p-6">
             <h2 class="text-lg font-semibold text-slate-950">Stage path</h2>
             <p v-if="can.update" class="mt-1 text-sm text-slate-500">Click a stage to progress the opportunity.</p>
             <ol class="mt-4 flex flex-wrap gap-2">
@@ -75,10 +75,10 @@ function setStage(stage) {
                         type="button"
                         class="rounded border px-3 py-1.5 text-sm transition"
                         :class="stage === opportunity.stage
-                            ? 'border-teal-600 bg-teal-50 font-semibold text-teal-900'
+                            ? 'border-brand bg-brand-light font-semibold text-brand-dark'
                             : index < currentStageIndex
-                                ? 'border-slate-300 bg-slate-50 text-slate-700 hover:border-teal-500'
-                                : 'border-slate-200 bg-white text-slate-500 hover:border-teal-500'"
+                                ? 'border-slate-300 bg-slate-50 text-slate-700 hover:border-brand'
+                                : 'border-slate-200 bg-white text-slate-500 hover:border-brand'"
                         :disabled="!can.update"
                         @click="setStage(stage)"
                     >
@@ -90,7 +90,7 @@ function setStage(stage) {
         </section>
 
         <div class="grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Opportunity details</h2>
                 <dl class="mt-4 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
                     <div>
@@ -99,7 +99,7 @@ function setStage(stage) {
                             <Link
                                 v-if="opportunity.account"
                                 :href="`/accounts/${opportunity.account.id}`"
-                                class="text-teal-800 hover:underline"
+                                class="ns-link"
                             >
                                 {{ opportunity.account.name }}
                             </Link>
@@ -145,7 +145,7 @@ function setStage(stage) {
                 </dl>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Ownership</h2>
                 <dl class="mt-4 space-y-4 text-sm">
                     <div>
@@ -164,7 +164,7 @@ function setStage(stage) {
             </section>
         </div>
 
-        <section class="mt-6 border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="mt-6 ns-card p-6">
             <h2 class="text-lg font-semibold text-slate-950">Stage history</h2>
             <ul v-if="opportunity.stageHistory?.length" class="mt-4 divide-y divide-slate-100 text-sm">
                 <li v-for="entry in opportunity.stageHistory" :key="entry.id" class="flex flex-wrap items-center justify-between gap-2 py-2">

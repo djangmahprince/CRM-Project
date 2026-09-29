@@ -12,9 +12,13 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Login');
+        $tab = $request->string('tab')->toString() === 'register' ? 'register' : 'login';
+
+        return Inertia::render('Auth/Login', [
+            'tab' => $tab,
+        ]);
     }
 
     public function store(LoginRequest $request): RedirectResponse

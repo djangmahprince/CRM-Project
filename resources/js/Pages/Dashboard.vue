@@ -43,7 +43,7 @@ function applyDates() {
 
 <template>
     <AppLayout :title="title || 'Home'">
-        <form class="mb-6 flex flex-wrap items-end gap-3 border border-slate-200 bg-white p-4 shadow-sm" @submit.prevent="applyDates">
+        <form class="mb-6 flex flex-wrap items-end gap-3 ns-card p-4" @submit.prevent="applyDates">
             <div>
                 <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500" for="dash-from">Close date from</label>
                 <input id="dash-from" v-model="from" type="date" class="mt-1 border border-slate-300 px-3 py-2 text-sm" />
@@ -52,16 +52,16 @@ function applyDates() {
                 <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500" for="dash-to">Close date to</label>
                 <input id="dash-to" v-model="to" type="date" class="mt-1 border border-slate-300 px-3 py-2 text-sm" />
             </div>
-            <button type="submit" class="bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Apply</button>
+            <button type="submit" class="ns-btn-primary">Apply</button>
         </form>
 
-        <section v-if="assistantInsights.length" class="mb-8 border border-teal-200 bg-teal-50/60 p-6 shadow-sm">
+        <section v-if="assistantInsights.length" class="mb-8 ns-card border border-brand-light bg-brand-light/60 p-6">
             <h2 class="text-lg font-semibold text-slate-950">Assistant</h2>
             <p class="mt-1 text-sm text-slate-600">Rule-based reminders — not AI predictions.</p>
-            <ul class="mt-4 divide-y divide-teal-100 text-sm">
+            <ul class="mt-4 divide-y divide-brand-light text-sm">
                 <li v-for="insight in assistantInsights" :key="insight.key" class="flex flex-wrap items-start justify-between gap-3 py-3">
                     <div>
-                        <Link :href="insight.url" class="font-medium text-teal-900 hover:underline">{{ insight.title }}</Link>
+                        <Link :href="insight.url" class="font-medium ns-link">{{ insight.title }}</Link>
                         <p class="mt-1 text-slate-600">{{ insight.body }}</p>
                     </div>
                     <button type="button" class="text-xs font-medium text-slate-500 hover:text-slate-800" @click="dismiss(insight.key)">
@@ -72,23 +72,23 @@ function applyDates() {
         </section>
 
         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <p class="text-sm font-medium text-slate-500">Open leads</p>
                 <p class="mt-4 text-3xl font-semibold tracking-tight text-slate-950">{{ metrics.open_leads }}</p>
-                <Link href="/leads" class="mt-2 inline-block text-sm text-teal-700 hover:underline">View leads</Link>
+                <Link href="/leads" class="mt-2 inline-block text-sm ns-link">View leads</Link>
             </section>
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <p class="text-sm font-medium text-slate-500">Pipeline value</p>
                 <p class="mt-4 text-3xl font-semibold tracking-tight text-slate-950">{{ money(metrics.pipeline_value) }}</p>
                 <p class="mt-1 text-xs text-slate-500">{{ metrics.open_opportunities }} open · {{ money(metrics.pipeline_amount) }} amount</p>
-                <Link href="/opportunities" class="mt-2 inline-block text-sm text-teal-700 hover:underline">View opportunities</Link>
+                <Link href="/opportunities" class="mt-2 inline-block text-sm ns-link">View opportunities</Link>
             </section>
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <p class="text-sm font-medium text-slate-500">Open cases</p>
                 <p class="mt-4 text-3xl font-semibold tracking-tight text-slate-950">{{ metrics.open_cases }}</p>
-                <Link href="/cases" class="mt-2 inline-block text-sm text-teal-700 hover:underline">View cases</Link>
+                <Link href="/cases" class="mt-2 inline-block text-sm ns-link">View cases</Link>
             </section>
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <p class="text-sm font-medium text-slate-500">Today</p>
                 <p class="mt-4 text-3xl font-semibold tracking-tight text-slate-950">{{ todaysTasks.length + todaysEvents.length }}</p>
                 <p class="mt-1 text-xs text-slate-500">{{ todaysTasks.length }} tasks · {{ todaysEvents.length }} events</p>
@@ -96,18 +96,18 @@ function applyDates() {
         </div>
 
         <div class="mt-8 grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Pipeline funnel</h2>
                 <CrmChart class="mt-4" type="bar" :labels="funnelLabels" :values="funnelValues" label="Amount" />
                 <ul class="mt-4 space-y-2 text-sm">
                     <li v-for="row in funnel" :key="row.stage" class="flex items-center justify-between">
-                        <Link :href="`/opportunities?q=${encodeURIComponent(row.stage)}`" class="text-teal-800 hover:underline">{{ row.stage }}</Link>
+                        <Link :href="`/opportunities?q=${encodeURIComponent(row.stage)}`" class="ns-link">{{ row.stage }}</Link>
                         <span class="font-medium text-slate-900">{{ row.count }} · {{ money(row.amount) }} · {{ row.percent }}%</span>
                     </li>
                 </ul>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Expected revenue by source</h2>
                 <CrmChart
                     v-if="revenueBySource.length"
@@ -128,15 +128,15 @@ function applyDates() {
         </div>
 
         <div class="mt-8 grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-lg font-semibold text-slate-950">Key deals</h2>
-                    <Link href="/opportunities" class="text-sm text-teal-700 hover:underline">All opportunities</Link>
+                    <Link href="/opportunities" class="text-sm ns-link">All opportunities</Link>
                 </div>
                 <ul v-if="keyDeals.length" class="mt-4 divide-y divide-slate-100 text-sm">
                     <li v-for="deal in keyDeals" :key="deal.id" class="flex flex-wrap items-center justify-between gap-3 py-3">
                         <div>
-                            <Link :href="`/opportunities/${deal.id}`" class="font-medium text-teal-800 hover:underline">{{ deal.name }}</Link>
+                            <Link :href="`/opportunities/${deal.id}`" class="font-medium ns-link">{{ deal.name }}</Link>
                             <p class="text-slate-500">{{ deal.account || 'No account' }} · {{ deal.stage }}</p>
                         </div>
                         <div class="text-right">
@@ -148,11 +148,11 @@ function applyDates() {
                 <p v-else class="mt-4 text-sm text-slate-500">No open deals yet.</p>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <h2 class="text-lg font-semibold text-slate-950">Recently viewed</h2>
                 <ul v-if="recentRecords.length" class="mt-4 divide-y divide-slate-100 text-sm">
                     <li v-for="(item, index) in recentRecords" :key="`${item.object}-${index}`" class="flex items-center justify-between gap-3 py-3">
-                        <Link :href="item.url" class="font-medium text-teal-800 hover:underline">{{ item.label }}</Link>
+                        <Link :href="item.url" class="font-medium ns-link">{{ item.label }}</Link>
                         <span class="text-xs uppercase tracking-wide text-slate-400">{{ item.object }}</span>
                     </li>
                 </ul>
@@ -161,28 +161,28 @@ function applyDates() {
         </div>
 
         <div class="mt-8 grid gap-6 lg:grid-cols-2">
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-lg font-semibold text-slate-950">Today's tasks</h2>
-                    <Link href="/tasks" class="text-sm text-teal-700 hover:underline">All tasks</Link>
+                    <Link href="/tasks" class="text-sm ns-link">All tasks</Link>
                 </div>
                 <ul v-if="todaysTasks.length" class="mt-4 divide-y divide-slate-100 text-sm">
                     <li v-for="task in todaysTasks" :key="task.id" class="flex items-center justify-between gap-3 py-3">
-                        <Link :href="`/tasks/${task.id}`" class="font-medium text-teal-800 hover:underline">{{ task.subject }}</Link>
+                        <Link :href="`/tasks/${task.id}`" class="font-medium ns-link">{{ task.subject }}</Link>
                         <span class="text-slate-500">{{ task.status }}</span>
                     </li>
                 </ul>
                 <p v-else class="mt-4 text-sm text-slate-500">No tasks due today.</p>
             </section>
 
-            <section class="border border-slate-200 bg-white p-6 shadow-sm">
+            <section class="ns-card p-6">
                 <div class="flex items-center justify-between gap-3">
                     <h2 class="text-lg font-semibold text-slate-950">Today's events</h2>
-                    <Link href="/calendar" class="text-sm text-teal-700 hover:underline">Calendar</Link>
+                    <Link href="/calendar" class="text-sm ns-link">Calendar</Link>
                 </div>
                 <ul v-if="todaysEvents.length" class="mt-4 divide-y divide-slate-100 text-sm">
                     <li v-for="event in todaysEvents" :key="event.id" class="flex items-center justify-between gap-3 py-3">
-                        <Link :href="`/events/${event.id}`" class="font-medium text-teal-800 hover:underline">{{ event.subject }}</Link>
+                        <Link :href="`/events/${event.id}`" class="font-medium ns-link">{{ event.subject }}</Link>
                         <span class="text-slate-500">{{ new Date(event.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
                     </li>
                 </ul>

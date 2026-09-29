@@ -49,7 +49,7 @@ function toggleSort(column) {
                     v-model="q"
                     type="search"
                     placeholder="Search subject, status"
-                    class="w-72 border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+                    class="w-72 border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand-light"
                 />
                 <button type="submit" class="bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Search</button>
                 <Link
@@ -64,7 +64,7 @@ function toggleSort(column) {
             <Link
                 v-if="can.create"
                 href="/tasks/create"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 New Task
             </Link>
@@ -78,7 +78,7 @@ function toggleSort(column) {
             <Link
                 v-if="can.create"
                 href="/tasks/create"
-                class="inline-flex bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="inline-flex ns-btn-primary"
             >
                 New Task
             </Link>
@@ -107,7 +107,7 @@ function toggleSort(column) {
                 <tbody class="divide-y divide-slate-100">
                     <tr v-for="task in tasks.data" :key="task.id" class="hover:bg-slate-50">
                         <td class="px-4 py-3 font-medium text-slate-900">
-                            <Link :href="`/tasks/${task.id}`" class="text-teal-800 hover:underline">
+                            <Link :href="`/tasks/${task.id}`" class="ns-link">
                                 {{ task.subject }}
                             </Link>
                         </td>

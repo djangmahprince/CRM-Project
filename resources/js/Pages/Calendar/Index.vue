@@ -83,7 +83,7 @@ function showEvent(event) {
                     :href="calendarHref(item.key)"
                     class="rounded px-3 py-2 text-sm font-medium"
                     :class="view === item.key
-                        ? 'bg-teal-700 text-white'
+                        ? 'bg-brand text-white'
                         : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
                 >
                     {{ item.label }}
@@ -97,14 +97,14 @@ function showEvent(event) {
                 <Link
                     v-if="can.create_event"
                     href="/events/create"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                    class="ns-btn-primary"
                 >
                     New Event
                 </Link>
                 <Link
                     v-if="can.create_task"
                     href="/tasks/create"
-                    class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                    class="ns-btn-secondary"
                 >
                     New Task
                 </Link>
@@ -118,8 +118,8 @@ function showEvent(event) {
             <span class="ml-2 text-slate-500">Drag events onto another day to reschedule.</span>
         </p>
 
-        <div v-if="view === 'table'" class="overflow-hidden border border-slate-200 bg-white shadow-sm">
-            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+        <div v-if="view === 'table'" class="ns-card overflow-hidden">
+            <table class="ns-table">
                 <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                         <th class="px-4 py-3">Subject</th>
@@ -131,7 +131,7 @@ function showEvent(event) {
                 <tbody class="divide-y divide-slate-100">
                     <tr v-for="event in events" :key="event.id" class="hover:bg-slate-50">
                         <td class="px-4 py-3">
-                            <Link :href="`/events/${event.id}`" class="font-medium text-teal-800 hover:underline">{{ event.subject }}</Link>
+                            <Link :href="`/events/${event.id}`" class="font-medium ns-link">{{ event.subject }}</Link>
                         </td>
                         <td class="px-4 py-3 text-slate-600">{{ event.starts_at }}</td>
                         <td class="px-4 py-3 text-slate-600">{{ event.ends_at }}</td>
@@ -142,7 +142,7 @@ function showEvent(event) {
             <p v-if="!events.length" class="px-4 py-6 text-sm text-slate-500">No events in this range.</p>
         </div>
 
-        <div v-else class="overflow-hidden border border-slate-200 bg-white shadow-sm">
+        <div v-else class="ns-card overflow-hidden">
             <div
                 class="grid gap-px bg-slate-200"
                 :class="view === 'day' ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-7'"
@@ -159,17 +159,17 @@ function showEvent(event) {
                     :key="day.date"
                     class="min-h-28 bg-white p-2"
                     :class="[
-                        day.is_today ? 'ring-2 ring-inset ring-teal-500' : '',
+                        day.is_today ? 'ring-2 ring-inset ring-brand' : '',
                         !day.is_current_month && view === 'month' ? 'bg-slate-50/80' : '',
                     ]"
                     @dragover.prevent
                     @drop.prevent="onDrop(day.date)"
                 >
                     <div class="mb-2 flex items-center justify-between">
-                        <Link :href="calendarHref('day', day.date)" class="text-sm font-semibold text-slate-800 hover:text-teal-800">
+                        <Link :href="calendarHref('day', day.date)" class="text-sm font-semibold text-slate-800 hover:text-brand">
                             {{ day.label }}
                         </Link>
-                        <span v-if="day.is_today" class="text-[10px] font-semibold uppercase text-teal-700">Today</span>
+                        <span v-if="day.is_today" class="text-[10px] font-semibold uppercase text-brand">Today</span>
                     </div>
                     <ul class="space-y-1">
                         <li
@@ -207,7 +207,7 @@ function showEvent(event) {
                 <p class="mt-2 text-sm text-slate-600">{{ detailEvent.starts_at }} – {{ detailEvent.ends_at }}</p>
                 <p v-if="detailEvent.location" class="mt-1 text-sm text-slate-600">{{ detailEvent.location }}</p>
                 <div class="mt-6 flex gap-3">
-                    <Link :href="`/events/${detailEvent.id}`" class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">
+                    <Link :href="`/events/${detailEvent.id}`" class="ns-btn-primary">
                         Open
                     </Link>
                     <button type="button" class="border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50" @click="detailEvent = null">

@@ -55,13 +55,13 @@ function toggleSort(column) {
                     v-model="q"
                     type="search"
                     placeholder="Search name, stage, next step"
-                    class="w-72 border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+                    class="ns-input w-72"
                 />
-                <button type="submit" class="bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Search</button>
+                <button type="submit" class="ns-btn-primary">Search</button>
                 <Link
                     href="/opportunities"
                     :data="{ recent: 1 }"
-                    class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                    class="ns-btn-secondary"
                 >
                     Recently viewed
                 </Link>
@@ -70,7 +70,7 @@ function toggleSort(column) {
             <Link
                 v-if="can.create"
                 href="/opportunities/create"
-                class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="ns-btn-primary"
             >
                 New Opportunity
             </Link>
@@ -84,14 +84,14 @@ function toggleSort(column) {
             <Link
                 v-if="can.create"
                 href="/opportunities/create"
-                class="inline-flex bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                class="inline-flex ns-btn-primary"
             >
                 New Opportunity
             </Link>
         </EmptyState>
 
-        <div v-else class="overflow-hidden border border-slate-200 bg-white shadow-sm">
-            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+        <div v-else class="ns-card overflow-hidden">
+            <table class="ns-table">
                 <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                         <th class="px-4 py-3">
@@ -113,7 +113,7 @@ function toggleSort(column) {
                 <tbody class="divide-y divide-slate-100">
                     <tr v-for="opportunity in opportunities.data" :key="opportunity.id" class="hover:bg-slate-50">
                         <td class="px-4 py-3 font-medium text-slate-900">
-                            <Link :href="`/opportunities/${opportunity.id}`" class="text-teal-800 hover:underline">
+                            <Link :href="`/opportunities/${opportunity.id}`" class="ns-link">
                                 {{ opportunity.name }}
                             </Link>
                         </td>
@@ -121,7 +121,7 @@ function toggleSort(column) {
                             <Link
                                 v-if="opportunity.account"
                                 :href="`/accounts/${opportunity.account.id}`"
-                                class="text-teal-800 hover:underline"
+                                class="ns-link"
                             >
                                 {{ opportunity.account.name }}
                             </Link>

@@ -14,7 +14,7 @@ const props = defineProps({
     stages: Object,
 });
 
-const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-100';
+const inputClass = 'block w-full border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand-light';
 
 const leadName = [props.lead.first_name, props.lead.last_name].filter(Boolean).join(' ');
 
@@ -63,11 +63,11 @@ function contactLabel(contact) {
             <FormSection title="Account" description="Create a new account or link to an existing one.">
                 <div class="md:col-span-2 flex flex-wrap gap-4 text-sm">
                     <label class="inline-flex items-center gap-2">
-                        <input v-model="form.account_mode" type="radio" value="create" class="border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.account_mode" type="radio" value="create" class="border-slate-300 text-brand focus:ring-brand" />
                         Create new account
                     </label>
                     <label class="inline-flex items-center gap-2">
-                        <input v-model="form.account_mode" type="radio" value="existing" class="border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.account_mode" type="radio" value="existing" class="border-slate-300 text-brand focus:ring-brand" />
                         Use existing account
                     </label>
                 </div>
@@ -107,7 +107,7 @@ function contactLabel(contact) {
                             </div>
                             <button
                                 type="button"
-                                class="shrink-0 border border-teal-700 px-3 py-1 text-xs font-semibold text-teal-800 hover:bg-teal-50"
+                                class="shrink-0 border border-brand px-3 py-1 text-xs font-semibold text-brand hover:bg-brand-light"
                                 @click="selectMatchedAccount(account)"
                             >
                                 Select
@@ -120,11 +120,11 @@ function contactLabel(contact) {
             <FormSection title="Contact" description="Create a new contact or link to an existing one.">
                 <div class="md:col-span-2 flex flex-wrap gap-4 text-sm">
                     <label class="inline-flex items-center gap-2">
-                        <input v-model="form.contact_mode" type="radio" value="create" class="border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.contact_mode" type="radio" value="create" class="border-slate-300 text-brand focus:ring-brand" />
                         Create new contact
                     </label>
                     <label class="inline-flex items-center gap-2">
-                        <input v-model="form.contact_mode" type="radio" value="existing" class="border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.contact_mode" type="radio" value="existing" class="border-slate-300 text-brand focus:ring-brand" />
                         Use existing contact
                     </label>
                 </div>
@@ -160,7 +160,7 @@ function contactLabel(contact) {
                             </div>
                             <button
                                 type="button"
-                                class="shrink-0 border border-teal-700 px-3 py-1 text-xs font-semibold text-teal-800 hover:bg-teal-50"
+                                class="shrink-0 border border-brand px-3 py-1 text-xs font-semibold text-brand hover:bg-brand-light"
                                 @click="selectMatchedContact(contact)"
                             >
                                 Select
@@ -173,7 +173,7 @@ function contactLabel(contact) {
             <FormSection title="Opportunity" description="Optionally create an opportunity from this lead.">
                 <div class="md:col-span-2">
                     <label class="inline-flex items-center gap-2 text-sm">
-                        <input v-model="form.create_opportunity" type="checkbox" class="rounded border-slate-300 text-teal-700 focus:ring-teal-600" />
+                        <input v-model="form.create_opportunity" type="checkbox" class="rounded border-slate-300 text-brand focus:ring-brand" />
                         Create opportunity
                     </label>
                 </div>
@@ -203,7 +203,7 @@ function contactLabel(contact) {
                 <button
                     type="submit"
                     :disabled="form.processing"
-                    class="bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+                    class="ns-btn-primary disabled:opacity-60"
                 >
                     {{ form.processing ? 'Converting...' : 'Convert lead' }}
                 </button>

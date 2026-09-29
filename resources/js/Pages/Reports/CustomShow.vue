@@ -54,7 +54,7 @@ function subscribe() {
                     <label class="block text-xs uppercase tracking-wide text-slate-500">Time</label>
                     <input v-model="subscriptionForm.send_time" type="time" class="mt-1 border border-slate-300 px-2 py-1.5" />
                 </div>
-                <button type="submit" class="bg-teal-700 px-3 py-2 font-semibold text-white hover:bg-teal-800">Save subscription</button>
+                <button type="submit" class="bg-brand px-3 py-2 font-semibold text-white hover:bg-brand-dark">Save subscription</button>
             </form>
         </section>
 

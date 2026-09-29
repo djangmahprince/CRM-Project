@@ -46,4 +46,10 @@ return [
         'Service Representative',
         'Read-Only User',
     ],
+
+    /*
+    | Shared invite code for self-service registration. When empty, Create Account
+    | is rejected. Compare submitted codes with hash_equals — never assign admin.
+    */
+    'registration_invite_code' => (string) env('REGISTRATION_INVITE_CODE', ''),
 ];
