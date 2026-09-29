@@ -140,6 +140,15 @@ Do not implement the full Salesforce surface in one pass. Each phase is shippabl
 
 Native mobile apps, workflow automation builder, custom objects, marketplace integrations, and **ML-based** AI insights. The Home “Assistant” in P0/P1 is **rule-based** only (e.g. accounts with no activity for 30+ days, opportunities near close date with no updates).
 
+### Phase 4 / Out of v1 — Workflows MVP (started)
+
+Narrow slice — not a Salesforce Flow builder:
+
+- [x] Persist workflow rules: object type, field, operator/value, `create_task` action (subject template, assign to owner), enabled flag
+- [x] Fire on Lead (and Opportunity) update when the watched field changes and the condition matches
+- [x] Admin Inertia UI: list + create + delete (`System Administrator` / `Sales Manager`)
+- [x] Feature tests for match / no-match / disabled rules
+
 ---
 
 ## Day-to-day implementation rules
@@ -193,3 +202,4 @@ Native mobile apps, workflow automation builder, custom objects, marketplace int
 - [x] Phase 2 — Conversion, calendar, notifications, report builder, import, attachments
 - [x] Phase 3 — Hierarchy, advanced search, dashboards, API, MFA, GDPR
 - [x] v1 hardening — Home Assistant, record-share tests, indexes, backup docs, admin GDPR nav
+- [x] Phase 4 / Out of v1 — Workflows MVP (rules + create_task on Lead/Opportunity update)

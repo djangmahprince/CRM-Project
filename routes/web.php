@@ -28,6 +28,7 @@ use App\Http\Controllers\ReportSubscriptionController;
 use App\Http\Controllers\SavedSearchController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\WorkflowRuleController;
 use App\Http\Middleware\EnsureSessionIsActive;
 use Illuminate\Support\Facades\Route;
 
@@ -107,6 +108,10 @@ Route::middleware(['auth', EnsureSessionIsActive::class])->group(function () {
     Route::get('/admin/gdpr', [GdprController::class, 'index'])->name('gdpr.index');
     Route::get('/admin/gdpr/{user}/export', [GdprController::class, 'export'])->name('gdpr.export');
     Route::delete('/admin/gdpr/{user}', [GdprController::class, 'destroy'])->name('gdpr.destroy');
+
+    Route::get('/admin/workflows', [WorkflowRuleController::class, 'index'])->name('workflows.index');
+    Route::post('/admin/workflows', [WorkflowRuleController::class, 'store'])->name('workflows.store');
+    Route::delete('/admin/workflows/{workflow}', [WorkflowRuleController::class, 'destroy'])->name('workflows.destroy');
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

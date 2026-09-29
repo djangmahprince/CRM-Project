@@ -115,6 +115,13 @@ function goSearch() {
                             MFA
                         </Link>
                         <Link
+                            v-if="page.props.auth.roles?.includes('System Administrator') || page.props.auth.roles?.includes('Sales Manager')"
+                            href="/admin/workflows"
+                            class="text-sm font-medium text-slate-600 transition hover:text-slate-950"
+                        >
+                            Workflows
+                        </Link>
+                        <Link
                             v-if="page.props.auth.roles?.includes('System Administrator')"
                             href="/admin/gdpr"
                             class="text-sm font-medium text-slate-600 transition hover:text-slate-950"
