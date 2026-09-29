@@ -19,9 +19,8 @@ class Lead extends Model
     protected $fillable = [
         'salutation', 'first_name', 'last_name', 'company', 'title', 'email', 'phone', 'mobile',
         'lead_status', 'lead_source', 'rating', 'industry', 'annual_revenue', 'number_of_employees',
-        'website', 'street', 'city', 'state', 'postal_code', 'country', 'description', 'converted',
-        'converted_account_id', 'converted_contact_id', 'converted_opportunity_id', 'owner_id',
-        'created_by', 'updated_by',
+        'website', 'street', 'city', 'state', 'postal_code', 'country', 'description',
+        'owner_id', 'created_by', 'updated_by',
     ];
 
     protected function casts(): array

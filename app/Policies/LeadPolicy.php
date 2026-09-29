@@ -33,6 +33,10 @@ class LeadPolicy
 
     public function delete(User $user, Lead $lead): bool
     {
+        if ($lead->converted) {
+            return false;
+        }
+
         return $user->can('leads.delete') && $lead->userCanAccess($user, 'write');
     }
 }

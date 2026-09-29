@@ -30,10 +30,10 @@ COMPLETE means end-to-end behavior works with server-side enforcement and automa
 | FR-RPT-003 | Report subscriptions via schedule | P2 | `SendReportSubscriptions` job | `ReportSubscriptionTest` | COMPLETE | Hourly schedule |
 | FR-DASH-001 | Configurable CRM dashboards | P2 | `CrmDashboardController` | `CrmDashboardTest` | COMPLETE | |
 | FR-IMP-001 | CSV import | P1 | `ImportController` | `ImportCsvTest` | COMPLETE | |
-| FR-FILE-001 | Attachments type/size + download/preview | P1/P2 | `AttachmentController` | `NoteAttachmentTest`, `AttachmentPreviewTest` | COMPLETE | Private disk; no virus scanner |
+| FR-FILE-001 | Attachments type/size + download/preview | P1/P2 | `AttachmentController` | `NoteAttachmentTest`, `AttachmentPreviewTest` | COMPLETE | Parent-record ACL; upload requires update; private disk; no virus scanner |
 | FR-NOTIF-001 | Assignment / due / ownership mail + in-app inbox | P1 | Notifications + `NotificationController` | `NotificationInboxTest` | COMPLETE | Alerts bell wired |
 | FR-MFA-001 | Optional TOTP MFA | P2 | `MfaController` | `MfaTest` | COMPLETE | |
-| FR-API-001 | REST CRUD for core objects + Sanctum | P2 | `routes/api.php`, `docs/openapi.yaml` | `Api*Test` | COMPLETE | OpenAPI outline |
+| FR-API-001 | REST CRUD for core objects + Sanctum | P2 | `routes/api.php`, `docs/openapi.yaml` | `Api*Test` | COMPLETE | Lead API auth aligned; OpenAPI outline |
 | FR-GDPR-001 | Admin export/delete | P2 | `GdprController` | `GdprTest` | COMPLETE | |
 | FR-WF-001 | Workflow rules create_task | Out of v1 MVP | `WorkflowAutomationService` | `WorkflowAutomationTest` | COMPLETE | Narrow slice |
 | NFR-SEC-001 | CSRF, mass assignment, upload allowlist, policies | — | Form Requests, policies | Feature suite | COMPLETE | |

@@ -90,6 +90,23 @@ class LeadCrudTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_converted_lead_cannot_be_deleted(): void
+    {
+        $user = $this->userWithRole('Sales Representative');
+
+        $lead = Lead::factory()->converted()->create([
+            'owner_id' => $user->id,
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+        ]);
+
+        $this->actingAs($user)
+            ->delete(route('leads.destroy', $lead))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('leads', ['id' => $lead->id, 'deleted_at' => null]);
+    }
+
     public function test_validation_requires_last_name_and_company(): void
     {
         $user = $this->userWithRole('Sales Representative');

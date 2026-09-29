@@ -61,4 +61,23 @@ class CaseCrudTest extends TestCase
         $this->assertFalse($case->is_closed);
         $this->assertSame('Working', $case->status);
     }
+
+    public function test_closed_case_cannot_be_deleted(): void
+    {
+        $user = $this->userWithRole('Service Representative');
+        $case = CrmCase::factory()->create([
+            'owner_id' => $user->id,
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+            'status' => 'Working',
+        ]);
+
+        $this->actingAs($user)->post(route('cases.close', $case))->assertRedirect();
+
+        $this->actingAs($user)
+            ->delete(route('cases.destroy', $case))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('cases', ['id' => $case->id, 'deleted_at' => null]);
+    }
 }

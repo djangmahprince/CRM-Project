@@ -20,16 +20,16 @@ class AttachmentController extends Controller
         abort_unless($class, 422);
 
         $record = $class::query()->findOrFail($request->integer('attachable_id'));
-        Gate::authorize('view', $record);
+        Gate::authorize('update', $record);
 
         $file = $request->file('file');
         $path = $file->store('attachments/'.$type.'/'.$record->getKey(), 'local');
 
         Attachment::query()->create([
-            'original_name' => $file->getClientOriginalName(),
+            'original_name' => $this->safeFilename($file->getClientOriginalName()),
             'path' => $path,
             'disk' => 'local',
-            'mime' => $file->getClientMimeType(),
+            'mime' => $file->getMimeType() ?: 'application/octet-stream',
             'size' => $file->getSize() ?: 0,
             'attachable_type' => $type,
             'attachable_id' => $record->getKey(),
@@ -44,7 +44,10 @@ class AttachmentController extends Controller
     {
         $this->authorizeAttachment($attachment);
 
-        return Storage::disk($attachment->disk)->download($attachment->path, $attachment->original_name);
+        return Storage::disk($attachment->disk)->download(
+            $attachment->path,
+            $this->safeFilename($attachment->original_name)
+        );
     }
 
     public function preview(Attachment $attachment): StreamedResponse|Response
@@ -55,19 +58,30 @@ class AttachmentController extends Controller
         $previewable = str_starts_with($mime, 'image/') || $mime === 'application/pdf' || str_starts_with($mime, 'text/');
         abort_unless($previewable, 415, 'Preview is only available for images, PDF, and text files.');
 
+        $filename = $this->safeFilename($attachment->original_name);
+
         return response(
             Storage::disk($attachment->disk)->get($attachment->path),
             200,
             [
                 'Content-Type' => $mime,
-                'Content-Disposition' => 'inline; filename="'.$attachment->original_name.'"',
+                'Content-Disposition' => 'inline; filename="'.$filename.'"',
             ]
         );
     }
 
     public function destroy(Attachment $attachment): RedirectResponse
     {
-        abort_unless((int) $attachment->owner_id === (int) auth()->id() || auth()->user()?->can('records.manage-all'), 403);
+        $user = auth()->user();
+        abort_unless($user, 403);
+
+        $parent = $attachment->attachable;
+        $canManageParent = $parent && $user->can('update', $parent);
+        $isOwner = (int) $attachment->owner_id === (int) $user->id;
+        $isAdmin = $user->can('records.manage-all');
+
+        abort_unless($isOwner || $canManageParent || $isAdmin, 403);
+
         Storage::disk($attachment->disk)->delete($attachment->path);
         $attachment->delete();
 
@@ -76,10 +90,19 @@ class AttachmentController extends Controller
 
     private function authorizeAttachment(Attachment $attachment): void
     {
-        abort_unless(
-            (int) $attachment->owner_id === (int) auth()->id()
-            || auth()->user()?->can('records.view-all'),
-            403
-        );
+        $user = auth()->user();
+        abort_unless($user, 403);
+
+        $parent = $attachment->attachable;
+        abort_unless($parent, 404);
+
+        Gate::authorize('view', $parent);
+    }
+
+    private function safeFilename(string $name): string
+    {
+        $clean = str_replace(["\r", "\n", '"', '\\'], '', basename($name));
+
+        return $clean !== '' ? $clean : 'attachment';
     }
 }

@@ -14,6 +14,8 @@ class LeadController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {
+        abort_unless($request->user()->can('viewAny', Lead::class), 403);
+
         $leads = Lead::query()
             ->visibleTo($request->user())
             ->with('owner:id,name,email')
@@ -25,12 +27,16 @@ class LeadController extends Controller
 
     public function store(Request $request): LeadResource
     {
+        abort_unless($request->user()->can('create', Lead::class), 403);
+
+        $openStatuses = array_values(array_diff(config('crm.lead_statuses'), ['Converted']));
+
         $data = $request->validate([
             'last_name' => ['required', 'string', 'max:80'],
             'first_name' => ['nullable', 'string', 'max:40'],
             'company' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:80'],
-            'lead_status' => ['required', Rule::in(config('crm.lead_statuses'))],
+            'lead_status' => ['required', Rule::in($openStatuses)],
             'lead_source' => ['nullable', 'string', 'max:80'],
         ]);
 

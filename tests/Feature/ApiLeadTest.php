@@ -49,4 +49,29 @@ class ApiLeadTest extends TestCase
         ])->assertSuccessful()
             ->assertJsonPath('data.last_name', 'Created');
     }
+
+    public function test_api_cannot_create_lead_as_converted(): void
+    {
+        $user = $this->userWithRole('Sales Representative');
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/v1/leads', [
+            'last_name' => 'Bad',
+            'company' => 'API Co',
+            'lead_status' => 'Converted',
+        ])->assertUnprocessable()
+            ->assertJsonValidationErrors(['lead_status']);
+    }
+
+    public function test_read_only_user_cannot_create_lead_via_api(): void
+    {
+        $user = $this->userWithRole('Read-Only User');
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/v1/leads', [
+            'last_name' => 'Nope',
+            'company' => 'API Co',
+            'lead_status' => 'New',
+        ])->assertForbidden();
+    }
 }

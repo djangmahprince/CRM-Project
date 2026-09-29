@@ -33,6 +33,10 @@ class CrmCasePolicy
 
     public function delete(User $user, CrmCase $case): bool
     {
+        if ($case->is_closed) {
+            return false;
+        }
+
         return $user->can('cases.delete') && $case->userCanAccess($user, 'write');
     }
 

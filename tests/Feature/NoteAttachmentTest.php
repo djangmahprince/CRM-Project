@@ -6,6 +6,8 @@ use App\Models\Account;
 use App\Models\Attachment;
 use App\Models\Lead;
 use App\Models\Note;
+use App\Models\OrgSetting;
+use App\Models\RecordShare;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +50,61 @@ class NoteAttachmentTest extends TestCase
 
         $this->assertSame(1, Attachment::query()->count());
         $this->assertSame(1, Note::query()->count());
+    }
+
+    public function test_read_only_user_cannot_upload_attachments(): void
+    {
+        Storage::fake('local');
+        OrgSetting::put('default_sharing', 'public_read');
+
+        $owner = $this->userWithRole('Sales Representative', ['email' => 'owner-attach@example.com']);
+        $readonly = $this->userWithRole('Read-Only User', ['email' => 'ro-attach@example.com']);
+
+        $lead = Lead::factory()->create([
+            'owner_id' => $owner->id,
+            'created_by' => $owner->id,
+            'updated_by' => $owner->id,
+        ]);
+
+        $this->actingAs($readonly)->post('/attachments', [
+            'attachable_type' => 'lead',
+            'attachable_id' => $lead->id,
+            'file' => UploadedFile::fake()->create('brief.pdf', 100, 'application/pdf'),
+        ])->assertForbidden();
+    }
+
+    public function test_user_who_can_view_parent_can_download_attachment(): void
+    {
+        Storage::fake('local');
+        OrgSetting::put('default_sharing', 'private');
+
+        $owner = $this->userWithRole('Sales Representative', ['email' => 'owner-dl@example.com']);
+        $viewer = $this->userWithRole('Sales Representative', ['email' => 'viewer-dl@example.com']);
+
+        $lead = Lead::factory()->create([
+            'owner_id' => $owner->id,
+            'created_by' => $owner->id,
+            'updated_by' => $owner->id,
+        ]);
+
+        RecordShare::query()->create([
+            'shareable_type' => 'lead',
+            'shareable_id' => $lead->id,
+            'user_id' => $viewer->id,
+            'access' => 'read',
+        ]);
+
+        $this->actingAs($owner)->post('/attachments', [
+            'attachable_type' => 'lead',
+            'attachable_id' => $lead->id,
+            'file' => UploadedFile::fake()->create('brief.pdf', 100, 'application/pdf'),
+        ])->assertRedirect();
+
+        $attachment = Attachment::query()->firstOrFail();
+
+        $this->actingAs($viewer)
+            ->get(route('attachments.download', $attachment))
+            ->assertSuccessful();
     }
 
     public function test_user_can_add_note_to_an_account(): void
