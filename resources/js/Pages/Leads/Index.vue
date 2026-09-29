@@ -1,5 +1,5 @@
 <script setup>
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import AppLayout from '../../Layouts/AppLayout.vue';
 import EmptyState from '../../Components/EmptyState.vue';
@@ -9,9 +9,12 @@ const props = defineProps({
     filters: Object,
     can: Object,
     picklists: Object,
+    owners: {
+        type: Array,
+        default: () => [],
+    },
 });
 
-const page = usePage();
 const q = ref(props.filters.q ?? '');
 const sort = ref(props.filters.sort ?? 'created_at');
 const direction = ref(props.filters.direction ?? 'desc');
@@ -156,7 +159,7 @@ function runBulk(action) {
                 <span class="text-slate-600">{{ selected.length }} selected</span>
                 <select v-model="bulkOwnerId" class="border border-slate-300 px-2 py-1">
                     <option value="">Change owner…</option>
-                    <option :value="page.props.auth.user.id">{{ page.props.auth.user.name }} (me)</option>
+                    <option v-for="owner in owners" :key="owner.id" :value="owner.id">{{ owner.name }}</option>
                 </select>
                 <button type="button" class="border border-slate-300 px-3 py-1.5 hover:bg-slate-50" @click="runBulk('owner')">Apply owner</button>
                 <select v-model="bulkStatus" class="border border-slate-300 px-2 py-1">

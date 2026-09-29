@@ -1,58 +1,73 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Northstar CRM — Sales & Service Cloud
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Web CRM built with **Laravel**, **Vue 3**, and **Inertia** covering Sales Cloud (Leads, Accounts, Contacts, Opportunities), Service Cloud (Cases), productivity (Tasks, Calendar), analytics (Reports, Dashboards), search, import/export, MFA, GDPR admin tools, and a versioned JSON API.
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.4+ with SQLite or MySQL
+- Composer 2
+- Node.js 20+ and npm
+- Optional: Docker Desktop for Compose stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Quick start (local)
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+# SQLite (default in .env.example):
+# touch database/database.sqlite
+php artisan migrate --seed
+npm install
+npm run build
+# Terminal A
+php artisan serve
+# Terminal B (optional while developing)
+npm run dev
+# Optional: queues + schedule
+php artisan queue:work
+php artisan schedule:work
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Open `http://localhost:8000` and sign in with seeded demo users (see [docs/DEMO_CREDENTIALS.md](docs/DEMO_CREDENTIALS.md)).
 
-## Contributing
+## Demo users
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Role | Email | Password |
+| --- | --- | --- |
+| System Administrator | admin@northstar.test | Password1! |
+| Sales Representative | rep@northstar.test | Password1! |
+| Service Representative | service@northstar.test | Password1! |
 
-## Code of Conduct
+## Architecture
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **UI transport:** Inertia pages under `resources/js/Pages`
+- **Authorization:** Spatie roles/permissions + record ownership/sharing (`visibleTo`)
+- **Domain actions:** e.g. `App\Actions\ConvertLeadAction`
+- **Background work:** queued notifications, task reminders, report subscriptions (`routes/console.php`)
+- **API:** Sanctum token API under `/api/v1/*` (see [docs/openapi.yaml](docs/openapi.yaml))
 
-## Security Vulnerabilities
+## Testing
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan test --compact
+vendor/bin/pint --dirty
+npm run build
+```
 
-## License
+Coverage requires Xdebug or PCOV (`php artisan test --coverage`).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Documentation
+
+| Doc | Purpose |
+| --- | --- |
+| [docs/requirements-status.md](docs/requirements-status.md) | SRS requirement traceability |
+| [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) | Architecture decisions |
+| [docs/BACKUP.md](docs/BACKUP.md) | Backup procedure |
+| [docs/DEMO_CREDENTIALS.md](docs/DEMO_CREDENTIALS.md) | Seeded login accounts |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Production / Docker notes |
+| [docs/openapi.yaml](docs/openapi.yaml) | REST API outline |
+
+## Environment highlights
+
+See `.env.example` for mail, queue, session idle timeout, CRM sharing defaults, and MFA-related settings. Never commit secrets; `env()` is only used inside `config/*` files.

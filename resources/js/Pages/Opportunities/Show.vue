@@ -21,6 +21,18 @@ function destroyOpportunity() {
 
     router.delete(`/opportunities/${props.opportunity.id}`);
 }
+
+function cloneOpportunity() {
+    router.post(`/opportunities/${props.opportunity.id}/clone`);
+}
+
+function setStage(stage) {
+    if (!props.can.update || stage === props.opportunity.stage) {
+        return;
+    }
+
+    router.patch(`/opportunities/${props.opportunity.id}/stage`, { stage }, { preserveScroll: true });
+}
 </script>
 
 <template>
@@ -33,6 +45,14 @@ function destroyOpportunity() {
             >
                 Edit
             </Link>
+            <button
+                v-if="can.clone"
+                type="button"
+                class="border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                @click="cloneOpportunity"
+            >
+                Clone
+            </button>
             <button
                 v-if="can.delete"
                 type="button"
@@ -48,18 +68,23 @@ function destroyOpportunity() {
 
         <section class="mb-6 border border-slate-200 bg-white p-6 shadow-sm">
             <h2 class="text-lg font-semibold text-slate-950">Stage path</h2>
+            <p v-if="can.update" class="mt-1 text-sm text-slate-500">Click a stage to progress the opportunity.</p>
             <ol class="mt-4 flex flex-wrap gap-2">
-                <li
-                    v-for="(stage, index) in stageNames"
-                    :key="stage"
-                    class="rounded border px-3 py-1.5 text-sm"
-                    :class="stage === opportunity.stage
-                        ? 'border-teal-600 bg-teal-50 font-semibold text-teal-900'
-                        : index < currentStageIndex
-                            ? 'border-slate-300 bg-slate-50 text-slate-700'
-                            : 'border-slate-200 bg-white text-slate-500'"
-                >
-                    {{ stage }}
+                <li v-for="(stage, index) in stageNames" :key="stage">
+                    <button
+                        type="button"
+                        class="rounded border px-3 py-1.5 text-sm transition"
+                        :class="stage === opportunity.stage
+                            ? 'border-teal-600 bg-teal-50 font-semibold text-teal-900'
+                            : index < currentStageIndex
+                                ? 'border-slate-300 bg-slate-50 text-slate-700 hover:border-teal-500'
+                                : 'border-slate-200 bg-white text-slate-500 hover:border-teal-500'"
+                        :disabled="!can.update"
+                        @click="setStage(stage)"
+                    >
+                        {{ stage }}
+                        <span class="ml-1 text-xs text-slate-400">{{ stages[stage] }}%</span>
+                    </button>
                 </li>
             </ol>
         </section>

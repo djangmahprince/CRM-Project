@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Concerns\ListsCrmRecords;
 use App\Http\Requests\StoreOpportunityRequest;
 use App\Http\Requests\UpdateOpportunityRequest;
+use App\Http\Requests\UpdateOpportunityStageRequest;
 use App\Models\Account;
 use App\Models\Opportunity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -94,6 +96,7 @@ class OpportunityController extends Controller
             'can' => [
                 'update' => $request->user()->can('update', $opportunity),
                 'delete' => $request->user()->can('delete', $opportunity),
+                'clone' => $request->user()->can('create', Opportunity::class),
             ],
         ]);
     }
@@ -122,6 +125,39 @@ class OpportunityController extends Controller
         $opportunity->delete();
 
         return redirect()->route('opportunities.index')->with('success', 'Opportunity deleted.');
+    }
+
+    public function updateStage(UpdateOpportunityStageRequest $request, Opportunity $opportunity): RedirectResponse
+    {
+        $opportunity->update(['stage' => $request->validated('stage')]);
+
+        return back()->with('success', 'Opportunity stage updated.');
+    }
+
+    public function clone(Request $request, Opportunity $opportunity): RedirectResponse
+    {
+        Gate::authorize('create', Opportunity::class);
+        Gate::authorize('view', $opportunity);
+
+        $clone = DB::transaction(function () use ($request, $opportunity) {
+            $copy = $opportunity->replicate([
+                'is_closed',
+                'is_won',
+            ]);
+            $copy->name = $opportunity->name.' (Copy)';
+            $copy->stage = 'Qualification';
+            $copy->close_date = now()->addMonth()->toDateString();
+            $copy->owner_id = $request->user()->id;
+            $copy->created_by = $request->user()->id;
+            $copy->updated_by = $request->user()->id;
+            $copy->save();
+
+            return $copy;
+        });
+
+        return redirect()
+            ->route('opportunities.edit', $clone)
+            ->with('success', 'Opportunity cloned. Review and save.');
     }
 
     /**

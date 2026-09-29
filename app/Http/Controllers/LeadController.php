@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLeadRequest;
 use App\Http\Requests\UpdateLeadRequest;
 use App\Models\Lead;
 use App\Models\RecentlyViewed;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -78,6 +79,7 @@ class LeadController extends Controller
                 'recent' => $request->boolean('recent'),
             ],
             'picklists' => $this->picklists(),
+            'owners' => User::query()->orderBy('name')->get(['id', 'name']),
             'can' => [
                 'create' => $user->can('create', Lead::class),
             ],

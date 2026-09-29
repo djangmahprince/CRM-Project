@@ -24,9 +24,11 @@ class DashboardTest extends TestCase
         $response->assertSuccessful();
         $response->assertInertia(fn ($page) => $page
             ->component('Dashboard')
-            ->where('title', 'Good morning')
+            ->where('title', 'Home')
             ->has('metrics')
             ->has('funnel')
+            ->has('keyDeals')
+            ->has('recentRecords')
             ->has('todaysTasks')
             ->has('todaysEvents')
             ->has('assistantInsights')

@@ -48,6 +48,23 @@ class HandleInertiaRequests extends Middleware
                     ? $user->getRoleNames()->values()->all()
                     : [],
             ],
+            'notifications' => $user ? [
+                'unread_count' => $user->unreadNotifications()->count(),
+                'recent' => $user->notifications()
+                    ->latest()
+                    ->limit(8)
+                    ->get()
+                    ->map(fn ($notification) => [
+                        'id' => $notification->id,
+                        'type' => class_basename($notification->type),
+                        'data' => $notification->data,
+                        'read_at' => optional($notification->read_at)?->toIso8601String(),
+                        'created_at' => $notification->created_at?->diffForHumans(),
+                    ]),
+            ] : [
+                'unread_count' => 0,
+                'recent' => [],
+            ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'status' => fn () => $request->session()->get('status'),

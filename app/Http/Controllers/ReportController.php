@@ -6,6 +6,7 @@ use App\Models\CrmCase;
 use App\Models\Lead;
 use App\Models\Opportunity;
 use App\Models\Report;
+use App\Support\ReportExporter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\DB;
@@ -45,24 +46,16 @@ class ReportController extends Controller
             'title' => $data['title'],
             'columns' => $data['columns'],
             'rows' => $data['rows'],
+            'recordCount' => count($data['rows']),
         ]);
     }
 
-    public function export(Request $request, string $report): StreamedResponse
+    public function export(Request $request, string $report, ReportExporter $exporter): StreamedResponse
     {
         $data = $this->reportData($request, $report);
-        $filename = $report.'-'.now()->format('Ymd-His').'.csv';
+        $format = strtolower($request->string('format')->toString() ?: 'csv');
 
-        return response()->streamDownload(function () use ($data): void {
-            $handle = fopen('php://output', 'w');
-            fputcsv($handle, $data['columns']);
-            foreach ($data['rows'] as $row) {
-                fputcsv($handle, array_values($row));
-            }
-            fclose($handle);
-        }, $filename, [
-            'Content-Type' => 'text/csv',
-        ]);
+        return $exporter->download($data, $report, $format);
     }
 
     /**

@@ -21,6 +21,7 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LeadConversionController;
 use App\Http\Controllers\MfaController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ReportBuilderController;
 use App\Http\Controllers\ReportController;
@@ -51,6 +52,10 @@ Route::middleware(['auth', EnsureSessionIsActive::class])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::post('/assistant/dismissals', [AssistantDismissalController::class, 'store'])->name('assistant.dismiss');
 
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
+
     Route::get('/search', [SearchController::class, 'index'])->name('search.index');
     Route::get('/search/suggest', [SearchController::class, 'suggest'])->name('search.suggest');
     Route::get('/search/advanced', [AdvancedSearchController::class, 'index'])->name('search.advanced');
@@ -65,6 +70,8 @@ Route::middleware(['auth', EnsureSessionIsActive::class])->group(function () {
     Route::resource('accounts', AccountController::class);
     Route::resource('contacts', ContactController::class);
     Route::resource('opportunities', OpportunityController::class);
+    Route::post('/opportunities/{opportunity}/clone', [OpportunityController::class, 'clone'])->name('opportunities.clone');
+    Route::patch('/opportunities/{opportunity}/stage', [OpportunityController::class, 'updateStage'])->name('opportunities.stage');
     Route::resource('cases', CaseController::class);
     Route::post('/cases/{case}/close', [CaseController::class, 'close'])->name('cases.close');
     Route::post('/cases/{case}/reopen', [CaseController::class, 'reopen'])->name('cases.reopen');
