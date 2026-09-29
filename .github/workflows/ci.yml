@@ -16,7 +16,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath
+          extensions: mbstring, pdo_sqlite, sqlite3, bcmath, zip
           coverage: none
 
       - name: Setup Node
@@ -33,7 +33,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate
           mkdir -p database
-          touch database/database.sqlite
+          touch database/testing.sqlite
 
       - name: Run Pint
         run: vendor/bin/pint --test
@@ -48,12 +48,20 @@ jobs:
         env:
           APP_ENV: testing
           DB_CONNECTION: sqlite
-          DB_DATABASE: ':memory:'
+          DB_DATABASE: database/testing.sqlite
           DB_URL: ''
           CACHE_STORE: array
           SESSION_DRIVER: array
           QUEUE_CONNECTION: sync
           MAIL_MAILER: array
-          PAO_DISABLE: 'true'
-        # --without-tty must come before other options; Collision forwards argv by offset.
-        run: php artisan test --without-tty --compact
+        run: php artisan test --compact --log-junit junit.xml
+
+      - name: Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-results
+          path: |
+            junit.xml
+            storage/logs
+          if-no-files-found: ignore
